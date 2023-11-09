@@ -1,0 +1,48 @@
+# Visual Studio 
+######################
+*.suo
+*.user
+*.sln.docstates
+
+# Build results
+###############
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Bb]uild/
+.vs
+# Test Results
+##############
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# Cache files
+#############
+[Tt]humbs.db
+*.dbmdl
+*.dbproj.schemaview
+*.pfx
+*.bak
+*.cache
+*.ilk
+*.meta
+*.obj
+*.pch
+*.pdb
+*.pgc
+*.pgd
+*.rsp
+*.sbr
+*.tlb
+*.tli
+*.tlh
+*.tmp
+*.log
+
+# Miscellany 
+#############
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
