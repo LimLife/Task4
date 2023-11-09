@@ -1,6 +1,7 @@
-﻿namespace OrderManagementSystem.Model.Repository
+﻿using OrderManagementSystem.Model.Repository.ProviderRepository;
+using OrderManagementSystem.Model.Repository.OrderRepository;
+
+namespace OrderManagementSystem.Model.Repository
 {
-    public interface IRepository
-    {
-    }
+    public interface IRepository : IOrderRepository, IProviderRepository { }   
 }
