@@ -1,7 +1,7 @@
 using Grpc.Core;
-using ItemMenagementSystem;
+using ItemManagementSystem;
 
-namespace ItemMenagementSystem.Services
+namespace ItemManagementSystem.Services
 {
     public class GreeterService : Greeter.GreeterBase
     {

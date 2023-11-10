@@ -4,7 +4,7 @@ using OrderManagementSystem.Model.Entity;
 
 namespace OrderManagementSystem.Model.Repository
 {
-    public class Repository : IRepository
+    public class Repository : IRepository //fix Create needed return new item with id
     {
         private readonly OrderDB _context;
         public Repository(OrderDB context) => _context = context;

@@ -13,7 +13,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Getaway", "Getaway", "{8846
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{40537957-0D89-45C4-9D1A-3D3A7072D0B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManagementSystem", "src\Services\OrderManagementSystem\OrderManagementSystem.csproj", "{0C31B635-23E2-491F-A47A-39E2F5E754FB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderManagementSystem", "src\Services\OrderManagementSystem\OrderManagementSystem.csproj", "{0C31B635-23E2-491F-A47A-39E2F5E754FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ItemManagementSystem", "src\Services\ItemMenagementSystem\ItemManagementSystem.csproj", "{87FCA193-CF4E-4AE9-B2F5-101C951BD0EE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +27,10 @@ Global
 		{0C31B635-23E2-491F-A47A-39E2F5E754FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C31B635-23E2-491F-A47A-39E2F5E754FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C31B635-23E2-491F-A47A-39E2F5E754FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87FCA193-CF4E-4AE9-B2F5-101C951BD0EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87FCA193-CF4E-4AE9-B2F5-101C951BD0EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87FCA193-CF4E-4AE9-B2F5-101C951BD0EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87FCA193-CF4E-4AE9-B2F5-101C951BD0EE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -34,6 +40,7 @@ Global
 		{88468941-4807-4811-832E-9D6181CB4737} = {22CD164E-02D2-4C47-A05B-D64A37B6350C}
 		{40537957-0D89-45C4-9D1A-3D3A7072D0B0} = {22CD164E-02D2-4C47-A05B-D64A37B6350C}
 		{0C31B635-23E2-491F-A47A-39E2F5E754FB} = {40537957-0D89-45C4-9D1A-3D3A7072D0B0}
+		{87FCA193-CF4E-4AE9-B2F5-101C951BD0EE} = {40537957-0D89-45C4-9D1A-3D3A7072D0B0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {36DBF418-B64A-4380-ABB9-954D429AF0A0}

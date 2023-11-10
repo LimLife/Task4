@@ -1,4 +1,4 @@
-using ItemMenagementSystem.Services;
+using ItemManagementSystem.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
