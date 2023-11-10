@@ -10,7 +10,7 @@ namespace OrderManagementSystem.Model.DataBase.FluentApi.Configuration
         {
             builder.HasKey(prymalKey => prymalKey.Id);
             builder.Property<string>(number => number.Number).HasColumnType("nvarchar(max)");
-            builder.HasOne(provider => provider.Provider).WithMany();
+            builder.HasOne(provider => provider.Provider).WithMany(order => order.Orders);
             builder.Property<DateTime>(date => date.Date).HasColumnType("datetime2(7)");
         }
     }
