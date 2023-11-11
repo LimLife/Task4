@@ -1,7 +1,6 @@
 ﻿using Grpc.Core;
 using Google.Protobuf.WellKnownTypes;
 using OrderManagementSystem.Grpc.Order;
-using OrderManagementSystem.Model.Entity;
 using OrderManagementSystem.Model.Repository;
 using OrderManagementSystem.Model.Repository.OrderRepository;
 using OrderManagementSystem.Tools;
