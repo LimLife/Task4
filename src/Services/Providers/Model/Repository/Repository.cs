@@ -1,4 +1,5 @@
-﻿using Providers.Model.DataBase;
+﻿using Microsoft.EntityFrameworkCore;
+using Providers.Model.DataBase;
 using Providers.Model.Entity;
 
 namespace Providers.Model.Repository
@@ -8,14 +9,23 @@ namespace Providers.Model.Repository
         private readonly ProviderDB _context;
         public Repository(ProviderDB context) => _context = context;
 
-        public Task<Provider?> ProviderByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Provider?> ProviderByIdAsync(int id) =>
+            await _context
+            .Providers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(idProvider=>idProvider.Id == id);
 
-        public Task<List<Provider>?> ProvidersAsync()
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Provider?> ProviderByNameAsync(string name)=>
+            await _context
+            .Providers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(provider=>provider.Name == name);
+      
+        public async Task<List<Provider>?> ProvidersAsync()=>
+            await _context
+            .Providers
+            .AsNoTracking()
+            .ToListAsync();
+       
     }
 }
