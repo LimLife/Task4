@@ -2,6 +2,7 @@
 
 option csharp_namespace = "ItemManagementSystem.Grpc.OrderItem";
 
+import "Protos/order.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 
@@ -9,10 +10,11 @@ package orderItem;
 
 service OrderItemService{
 	rpc GetOrderItem(GetOrderItemReques)returns(OrderItemReply);
-	rpc GetListOrder(google.protobaf.Empty)returns(ListReply);
+	rpc GetListOrder(google.protobuf.Empty)returns(ListReply);
 	rpc CreateOrderItem(CreateOrderItemReques)returns(OrderItemReply);
 	rpc UpdateOrderItem(UpdateOrderItemReques)returns(OrderItemReply);
-	rpc DeleteOrderItem(DeleteOrderItemReques)returns(google.protobaf.BoolValue);
+	rpc DeleteOrderItem(DeleteOrderItemReques)returns(google.protobuf.BoolValue);
+	
 }
 
 message OrderItemReply{
@@ -49,5 +51,5 @@ message ListReply{
 
 message DecimalValue{
 	int64 units =1;
-	sfixed nanos =2;
+	sfixed32 nanos =2;
 }

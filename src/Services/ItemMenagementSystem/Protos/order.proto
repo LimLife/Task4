@@ -2,11 +2,11 @@
 
 option csharp_namespace = "ItemManagementSystem.Grpc.Order";
 import "google/protobuf/empty.proto";
-
-package orderItem;
+import "google/protobuf/wrappers.proto";
+package orderToItem;
 
 service OrderService{
-	rpc GetOrder(GetOrder)returns(OrderReply);
+	rpc GetOrder(GetOrderRequest)returns(OrderReply);
 	rpc GerListOrder(google.protobuf.Empty)returns(ListOrderReply);
 }
 message GetOrderRequest{
