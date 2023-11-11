@@ -13,19 +13,19 @@ namespace Providers.Model.DataBase
         {
             modelBuilder.ApplyConfiguration(new ProviderConfiguration());
 
-            modelBuilder.Entity<Provider>().HasData(new List<Provider>() 
-            { 
-                new Provider() {  Name = "Oleg and K.O"},
-                new Provider() {  Name = "Magomed Inc"},
-                new Provider() {  Name = "At Olesya's"},
-                new Provider() {  Name = "At Home"},
-                new Provider() {  Name = "Horns and hooves"},
-                new Provider() {  Name = "The best company"},
-                new Provider() {  Name = "Another best company"},
-                new Provider() {  Name = "Midass"},
-                new Provider() {  Name = "Golden Path"},
-                new Provider() {  Name = "Fun beavers"},
-                new Provider() {  Name = "Pi 3.14"}
+            modelBuilder.Entity<Provider>().HasData(new List<Provider>()
+            {
+                new Provider() { Id =1, Name = "Oleg and K.O"},
+                new Provider() { Id=2, Name = "Magomed Inc"},
+                new Provider() { Id= 3, Name = "At Olesya's"},
+                new Provider() { Id=4, Name = "At Home"},
+                new Provider() { Id = 5, Name = "Horns and hooves"},
+                new Provider() { Id= 6, Name = "The best company"},
+                new Provider() { Id=7, Name = "Another best company"},
+                new Provider() { Id =8, Name = "Midass"},
+                new Provider() { Id =9, Name = "Golden Path"},
+                new Provider() { Id=10, Name = "Fun beavers"},
+                new Provider() { Id =11, Name = "Pi 3.14"}
             });
 
         }

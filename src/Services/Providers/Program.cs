@@ -6,7 +6,7 @@ using Providers.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IRepository, Repository>();
-builder.Services.AddDbContext<ProviderDB>(op => op.UseSqlite(builder.Configuration.GetConnectionString("")));
+builder.Services.AddDbContext<ProviderDB>(op => op.UseSqlite(builder.Configuration.GetConnectionString("providerConnection")));
 
 builder.Services.AddGrpc();
 

@@ -14,7 +14,7 @@ namespace Providers.Model.DataBase
             builder.AddJsonFile("appsettings.json");
             IConfigurationRoot configurationRoot = builder.Build();
 
-            string conntectionString = configurationRoot.GetConnectionString("orderDB");
+            string conntectionString = configurationRoot.GetConnectionString("providerConnection");
             options.UseSqlite(conntectionString);
             return new ProviderDB(options.Options);
         }
