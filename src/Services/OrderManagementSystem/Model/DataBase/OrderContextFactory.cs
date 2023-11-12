@@ -13,8 +13,8 @@ namespace OrderManagementSystem.Model.DataBase
             builder.AddJsonFile("appsettings.json");
             IConfigurationRoot configurationRoot = builder.Build();
 
-            string conntectionString = configurationRoot.GetConnectionString("orderDB");
-            options.UseNpgsql(conntectionString);
+            string conntectionString = configurationRoot.GetConnectionString("orderConnection");
+            options.UseSqlServer(conntectionString);
             return new OrderDB(options.Options);
         }
     }
