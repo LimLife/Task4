@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace OrderManagementSystem.Model.Repository
 {
-    public class Repository : IRepository //fix Create needed return new item with id
+    public class Repository : IRepository
     {
         private readonly OrderDB _context;
         public Repository(OrderDB context) => _context = context;
@@ -14,6 +14,7 @@ namespace OrderManagementSystem.Model.Repository
             await _context
             .Orders
             .AsNoTracking()
+            .Include(provider => provider.Provider)
             .FirstOrDefaultAsync(o => o.Id == id);
 
         public async Task<Provider?> GetProviderByIdAsync(int id) =>
@@ -27,6 +28,7 @@ namespace OrderManagementSystem.Model.Repository
             await _context
             .Orders
             .AsNoTracking()
+            .Include(provider => provider.Provider)
             .ToListAsync();
 
 
@@ -43,7 +45,9 @@ namespace OrderManagementSystem.Model.Repository
 
             _context.Entry<Order>(order).State = EntityState.Added;
             await _context.SaveChangesAsync();
-            return order;
+            var created = await _context.Orders.Include(provider => provider.Provider).FirstOrDefaultAsync(id => id.Id == order.Id);
+            if (created is null) return null;
+            return created;
         }
 
         public async Task<Order?> TryUpdateOrderAsync(Order order)
