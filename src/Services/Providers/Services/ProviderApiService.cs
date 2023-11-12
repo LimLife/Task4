@@ -2,6 +2,7 @@
 using Providers.Model.Repository;
 using Providers.Grpc.Provider;
 using Grpc.Core;
+using System.Diagnostics;
 
 namespace Providers.Services
 {
@@ -31,6 +32,7 @@ namespace Providers.Services
         }
         public override async Task<ListProviderReply> GetListProviders(Empty request, ServerCallContext context)
         {
+            Debug.WriteLine("Call");
             var items = await _repository.ProvidersAsync() ?? throw new RpcException(new Status(StatusCode.NotFound, "Nothing found"));
             var replyList = items.Select(provider => new ProviderReply { Id = provider.Id, Name = provider.Name }).ToList();
             var list = new ListProviderReply();

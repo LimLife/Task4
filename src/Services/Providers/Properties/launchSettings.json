@@ -1,6 +1,6 @@
 ﻿{
   "profiles": {
-    "http": {
+    "ProviderHttp": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
@@ -9,13 +9,21 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "https": {
+    "ProviderHttps": {
       "commandName": "Project",
       "dotnetRunMessages": true,
       "launchBrowser": false,
-      "applicationUrl": "https://localhost:7274;http://localhost:5094",
+      "applicationUrl": "https://localhost:7274;",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  },
+  "Kestrel": {
+    "Endpoints": {
+      "Http2Endpoint": {
+        "Url": "https://localhost:7274;",
+        "Protocols": "Http2"
       }
     }
   }
