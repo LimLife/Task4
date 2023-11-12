@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using OrderManagementSystem.Model.DataBase;
+﻿using OrderManagementSystem.Model.DataBase;
 using OrderManagementSystem.Model.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace OrderManagementSystem.Model.Repository
 {

@@ -33,5 +33,6 @@ builder.Services.AddCors(polici => polici.AddPolicy("AllowAll", options =>
 var app = builder.Build();
 app.UseCors();
 app.MapGrpcService<OrderApiService>();
+app.MapGrpcService<ProviderApiService>();
 
 app.Run();
