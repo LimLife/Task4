@@ -4,6 +4,8 @@ using Microsoft.EntityFrameworkCore;
 using Providers.Model.Repository;
 using Providers.Model.DataBase;
 using Providers.Services;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IRepository, Repository>();
