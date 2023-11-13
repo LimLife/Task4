@@ -68,5 +68,10 @@ namespace ItemManagementSystem.Model.Repository
                 .Any(entity => item.Id == entity.Id);
             return Task.FromResult(!isEntity);
         }
+
+        public async Task<bool> IsConnectAsync()
+        {
+            return await _context.Database.CanConnectAsync();
+        }
     }
 }

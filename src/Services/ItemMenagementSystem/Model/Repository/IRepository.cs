@@ -3,5 +3,8 @@ using ItemManagementSystem.Model.Repository.RepositoryOrder;
 
 namespace ItemManagementSystem.Model.Repository
 {
-    public interface IRepository : IRepositoryOrderItem, IRepositoryOrder { }  
+    public interface IRepository : IRepositoryOrderItem, IRepositoryOrder
+    {
+        public Task<bool> IsConnectAsync();
+    }
 }
