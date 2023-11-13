@@ -42,7 +42,6 @@ namespace OrderManagementSystem.Model.Repository
         public async Task<Order?> TryCreateOrderAsync(Order order)
         {
             if (order is null) return null;
-
             _context.Entry<Order>(order).State = EntityState.Added;
             await _context.SaveChangesAsync();
             var created = await _context.Orders.Include(provider => provider.Provider).FirstOrDefaultAsync(id => id.Id == order.Id);
@@ -53,20 +52,22 @@ namespace OrderManagementSystem.Model.Repository
         public async Task<Order?> TryUpdateOrderAsync(Order order)
         {
             if (order is null) return null;
-
             _context.Entry<Order>(order).State = EntityState.Modified;
             await _context.SaveChangesAsync();
             return order;
         }
         public async Task<bool> TryDeleteOrderAsync(int id)
         {
-            var isOrder = _context.Orders.Any(o => o.Id == id);
-            if (!isOrder) return false;
-
             var order = new Order { Id = id };
             _context.Entry<Order>(order).State = EntityState.Deleted;
             await _context.SaveChangesAsync();
-            return true;
+            var isOrder = _context.Orders.Any(o => o.Id == id);
+            return !isOrder;
+        }
+
+        public async Task<bool> IsConnectAsync()
+        {
+            return await _context.Database.CanConnectAsync();
         }
     }
 }

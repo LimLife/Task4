@@ -4,6 +4,7 @@ using OrderManagementSystem.Model.DataBase;
 using System.Security.Authentication;
 using OrderManagementSystem.Services;
 using Microsoft.EntityFrameworkCore;
+using OrderManagementSystem.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -31,6 +32,7 @@ builder.Services.AddCors(polici => polici.AddPolicy("AllowAll", options =>
 }));
 
 var app = builder.Build();
+app.UseMiddleware<CheckDBConnect>();
 app.UseCors();
 app.MapGrpcService<OrderApiService>();
 app.MapGrpcService<ProviderApiService>();
