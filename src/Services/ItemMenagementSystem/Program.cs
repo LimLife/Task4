@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddDbContext<OrderItemDB>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("orderDB")));
+builder.Services.AddDbContext<OrderItemDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("orderDB")));
 builder.Services.AddGrpc();
 
 builder.WebHost.ConfigureKestrel(serverOptions =>

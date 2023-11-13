@@ -14,7 +14,7 @@ namespace ItemManagementSystem.Model.DataBase
             IConfigurationRoot configurationRoot = builder.Build();
 
             string conntectionString = configurationRoot.GetConnectionString("orderDB");
-            options.UseNpgsql(conntectionString);
+            options.UseSqlServer(conntectionString);
             return new OrderItemDB(options.Options);
         }
     }
