@@ -1,13 +1,14 @@
-using ItemManagementSystem.Middleware;
-using ItemManagementSystem.Model.DataBase;
-using ItemManagementSystem.Services;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
-using Microsoft.EntityFrameworkCore;
+using ItemManagementSystem.Model.DataBase;
+using ItemManagementSystem.Middleware;
 using System.Security.Authentication;
+using ItemManagementSystem.Services;
+using Microsoft.EntityFrameworkCore;
+using ItemManagementSystem.Model.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddDbContext<OrderItemDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("orderDB")));
+builder.Services.AddTransient<IRepository, Repository>();
+builder.Services.AddDbContext<OrderItemDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("orderItemDB")));
 builder.Services.AddGrpc();
 
 builder.WebHost.ConfigureKestrel(serverOptions =>

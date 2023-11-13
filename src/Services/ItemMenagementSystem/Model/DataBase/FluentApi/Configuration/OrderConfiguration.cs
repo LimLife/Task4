@@ -9,7 +9,7 @@ namespace ItemManagementSystem.Model.DataBase.FluentApi.Configuration
         public void Configure(EntityTypeBuilder<Order> builder)
         {
             builder.HasKey(primalKey => primalKey.Id);
-            builder.HasMany(item => item.Items).WithOne(order => order.OrderId);
+            builder.HasMany(item => item.Items).WithOne(order => order.Order);
         }
     }
 }
