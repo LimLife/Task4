@@ -3,8 +3,8 @@ using System.Security.Authentication;
 using Microsoft.EntityFrameworkCore;
 using Providers.Model.Repository;
 using Providers.Model.DataBase;
+using Providers.Middleware;
 using Providers.Services;
-
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,7 +32,7 @@ builder.Services.AddCors(polici => polici.AddPolicy("AllowAll", options =>
 builder.Services.AddGrpc();
 
 var app = builder.Build();
-
+app.UseMiddleware<CheckDBConnect>();
 app.UseCors();
 app.MapGrpcService<ProviderApiService>();
 app.Run();

@@ -26,6 +26,9 @@ namespace Providers.Model.Repository
             .Providers
             .AsNoTracking()
             .ToListAsync();
-       
+        public async Task<bool> IsConnectAsync()
+        {
+            return await _context.Database.CanConnectAsync();
+        }
     }
 }
