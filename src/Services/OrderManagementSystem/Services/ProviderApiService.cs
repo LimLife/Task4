@@ -1,8 +1,8 @@
-﻿using Grpc.Core;
-using Google.Protobuf.WellKnownTypes;
-using OrderManagementSystem.Grpc.Provider;
+﻿using OrderManagementSystem.Model.Repository.ProviderRepository;
+using OrderManagementSystem.Grpc.ProviderService;
 using OrderManagementSystem.Model.Repository;
-using OrderManagementSystem.Model.Repository.ProviderRepository;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 
 namespace OrderManagementSystem.Services
 {
@@ -12,23 +12,33 @@ namespace OrderManagementSystem.Services
         public ProviderApiService(IRepository repository) => _repository = repository;
 
 
-        public override async Task<ListProviderReply> GetProviders(Empty request, ServerCallContext context)
+        public override async Task<ProviderReply> GetProviderById(GetRequestById request, ServerCallContext context)
         {
-            var item = await _repository.GetProvidersAsync() ?? throw new RpcException(new Status(StatusCode.NotFound, "Nothing elements"));
-            var reply = new ListProviderReply();
-            var collectionReply = item.Select(provider => new ProviderReply { Id = provider.Id, ProviderId = provider.ProviderId });
-            reply.Provider.AddRange(collectionReply);
-            return reply;
-        }
-        public override async Task<ProviderReply> GetProviderById(GetProvidersByIdReques request, ServerCallContext context)
-        {
-            var item = await _repository.GetProviderByIdAsync(request.Id) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Element by id: {request.Id}"));
+            var item = await _repository.ProviderByIdAsync(request.Id) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Element by: {request.Id}"));
             return new ProviderReply
             {
                 Id = item.Id,
-                ProviderId = item.ProviderId
+                Name = item.Name,
             };
         }
+        public override async Task<ProviderReply> GetProviderByName(GetRequestByName request, ServerCallContext context)
+        {
+            var item = await _repository.ProviderByNameAsync(request.Name) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Element by: {request.Name}"));
+            return new ProviderReply
+            {
+                Id = item.Id,
+                Name = item.Name,
+            };
+        }
+        public override async Task<ListProviderReply> GetListProviders(Empty request, ServerCallContext context)
+        {
+            var items = await _repository.ProvidersAsync() ?? throw new RpcException(new Status(StatusCode.NotFound, "Nothing found"));
+            var replyList = items.Select(provider => new ProviderReply { Id = provider.Id, Name = provider.Name }).ToList();
+            var list = new ListProviderReply();
+            list.Provider.AddRange(replyList);
+            return list;
+        }
+
 
 
     }

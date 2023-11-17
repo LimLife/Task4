@@ -1,9 +1,9 @@
-﻿using Grpc.Core;
-using Google.Protobuf.WellKnownTypes;
-using OrderManagementSystem.Grpc.Order;
+﻿using OrderManagementSystem.Model.Repository.OrderRepository;
+using OrderManagementSystem.Grpc.OrderService;
 using OrderManagementSystem.Model.Repository;
-using OrderManagementSystem.Model.Repository.OrderRepository;
+using Google.Protobuf.WellKnownTypes;
 using OrderManagementSystem.Tools;
+using Grpc.Core;
 
 namespace OrderManagementSystem.Services
 {
@@ -14,7 +14,15 @@ namespace OrderManagementSystem.Services
         {
             _repository = repository;
         }
-
+        public override async Task<BoolValue> IsStringParameterNumber(IsStringParameterRequest request, ServerCallContext context)
+        {
+            if (request is null || string.IsNullOrEmpty(request.Str))
+            {
+                _ = new RpcException(new Status(StatusCode.NotFound, $"Order by Id {request.IdOrder}"));
+            }
+            var result = await _repository.IsContainsNameInOrderAcync(request.IdOrder, request.Str);
+            return new BoolValue { Value = result };
+        }
         public override async Task<OrderReply> GetOrder(GetOrderRequest request, ServerCallContext context)
         {
             var item = await _repository.GetOrderByIdAsync(request.Id) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Order with id: {request.Id}"));
@@ -35,9 +43,9 @@ namespace OrderManagementSystem.Services
         }
         public override async Task<OrderReply> UpdateOrder(UpdateOrderRequest request, ServerCallContext context)
         {
-            if(request is null) throw new ArgumentNullException(nameof(request));
+            if (request is null) throw new ArgumentNullException(nameof(request));
             var order = RpcCovert.ConvertRequestToOrder(request);
-            var update = await _repository.TryUpdateOrderAsync(order) ?? throw new RpcException(new Status(StatusCode.NotFound,$"Element with id: {request.Id}"));
+            var update = await _repository.TryUpdateOrderAsync(order) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Element with id: {request.Id}"));
             return RpcCovert.GetOrderReply(update);
         }
         public override async Task<BoolValue> DeleteOrder(DeleteOrderRequest request, ServerCallContext context)

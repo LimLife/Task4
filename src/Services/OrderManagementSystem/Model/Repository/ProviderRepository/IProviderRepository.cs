@@ -4,7 +4,8 @@ namespace OrderManagementSystem.Model.Repository.ProviderRepository
 {
     public interface IProviderRepository
     {
-        public Task<Provider?> GetProviderByIdAsync(int id);
-        public Task<List<Provider>?> GetProvidersAsync(); 
+        public Task<Provider?> ProviderByIdAsync(int id);
+        public Task<Provider?> ProviderByNameAsync(string name);
+        public Task<List<Provider>?> ProvidersAsync();
     }
 }

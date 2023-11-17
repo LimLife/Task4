@@ -1,6 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OrderManagementSystem.Model.Entity;
+using Microsoft.EntityFrameworkCore;
 
 namespace OrderManagementSystem.Model.DataBase.FluentApi.Configuration
 {
@@ -8,8 +8,9 @@ namespace OrderManagementSystem.Model.DataBase.FluentApi.Configuration
     {
         public void Configure(EntityTypeBuilder<Provider> builder)
         {
-            builder.HasKey(primalKey=>primalKey.Id);
-            builder.Property<int>(providerId=>providerId.Id);
+            builder.ToTable(nameof(Provider));
+            builder.HasKey(primalKey => primalKey.Id);
+            builder.Property<string>(name => name.Name).HasColumnType("nvarchar(max)");
         }
     }
 }

@@ -6,6 +6,7 @@ namespace OrderManagementSystem.Model.Repository.OrderRepository
     {
         public Task<Order?> GetOrderByIdAsync(int id);
         public Task<List<Order>?> GetOrdersAsync();
+        public Task<bool> IsContainsNameInOrderAcync(int orderItemId, string nameToItemOrder);
         public Task<Order?> TryCreateOrderAsync(Order order);
         public Task<Order?> TryUpdateOrderAsync(Order order);
         public Task<bool> TryDeleteOrderAsync(int id);

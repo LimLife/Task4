@@ -1,7 +1,9 @@
-﻿using Google.Protobuf;
-using Google.Protobuf.WellKnownTypes;
-using OrderManagementSystem.Grpc.Order;
+﻿using ItemManagementSystem.Grpc.OrderItemService;
+using OrderManagementSystem.Grpc.OrderService;
 using OrderManagementSystem.Model.Entity;
+using Google.Protobuf.WellKnownTypes;
+using Google.Protobuf;
+using OrderManagementSystem.Grpc.ProviderService;
 
 namespace OrderManagementSystem.Tools
 {
@@ -17,6 +19,14 @@ namespace OrderManagementSystem.Tools
                 Provider = GetProvider(reply.Provider),
             };
         }
+        public static DateTime GetDateTime(Timestamp timestamp)
+        {
+            return timestamp.ToDateTime();
+        }
+        public static Timestamp GetTimestamp(DateTime dateTime)
+        {
+            return Timestamp.FromDateTime(dateTime.ToUniversalTime());
+        }
         public static OrderReply GetOrderReply(Order order)
         {
             return new OrderReply
@@ -27,7 +37,6 @@ namespace OrderManagementSystem.Tools
                 Provider = GetProviderReply(order.Provider)
             };
         }
-
         public static ListOrderRiply GetOrderReply(List<Order> order)
         {
             var reply = new ListOrderRiply();
@@ -41,7 +50,7 @@ namespace OrderManagementSystem.Tools
             return new Provider
             {
                 Id = reply.Id,
-                ProviderId = reply.ProviderId,
+                Name = reply.Name,
             };
         }
         public static ProviderReply GetProviderReply(Provider provider)
@@ -49,7 +58,7 @@ namespace OrderManagementSystem.Tools
             return new ProviderReply
             {
                 Id = provider.Id,
-                ProviderId = provider.ProviderId,
+                Name = provider.Name,
             };
         }
 
@@ -87,6 +96,20 @@ namespace OrderManagementSystem.Tools
                 return new Order { Id = delete.Id, };
             }
             return null;
+        }
+
+
+        private const decimal NanoFactor = 1_000_000_000;
+
+        public static decimal GetDecimal(DecimalValue value)
+        {
+            return value.Units + value.Nanos / NanoFactor;
+        }
+        public static DecimalValue GetReplyDecimal(decimal value)
+        {
+            var units = decimal.ToInt64(value);
+            var nanos = decimal.ToInt32((value - units) * NanoFactor);
+            return new DecimalValue() { Nanos = nanos, Units = units };
         }
     }
 }
