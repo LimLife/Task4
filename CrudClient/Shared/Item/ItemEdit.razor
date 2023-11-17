@@ -1,0 +1,25 @@
+﻿
+<EditForm Model="@_orderItem" OnValidSubmit="@ApplayChangesAsync">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="input-group">
+        <span class="input-group-text">Name:</span>
+        <InputText class="form-control" placeholder="Name" @bind-Value="_orderItem.Name" />
+        <ValidationMessage For="@(()=>_orderItem.Name)" />
+    </div>
+    <div class="input-group">
+        <span class="input-group-text">Quantity:</span>
+        <InputNumber class="form-control" placeholder="Quantity" @bind-Value="_orderItem.Quantity" />
+        <ValidationMessage For="@(()=>_orderItem.Quantity)" />
+    </div>
+    <div class="input-group">
+        <span class="input-group-text">Unit:</span>
+        <InputText class="form-control" placeholder="Unit" @bind-Value="_orderItem.Unit" />
+        <ValidationMessage For="@(()=>_orderItem.Unit)" />
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <button @onclick="@ApplayChangesAsync"> Изменить </button>
+        </div>
+    </div>
+</EditForm>

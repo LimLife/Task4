@@ -1,0 +1,39 @@
+﻿<EditForm Model="@_filter" OnSubmit="@GetFilterElementsAsync">
+    <div class="input-group">
+        <span class="input-group-text">Number:</span>
+        <InputText class="form-control" placeholder="Number" @bind-Value="_filter.Number" />
+    </div>
+    <div class="md-form row">
+        <div class="col-2 d-flex align-items-center">
+            <label for="starting">Диапозон</label>
+        </div>
+        <div class="col-5">
+            <InputDate placeholder="Selected starting date" id="startingDate" class="form-control datepicker" @bind-Value="_filter.Start" />
+        </div>
+        <div class="col-5">
+            <InputDate placeholder="Selected starting date" id="startingDate" class="form-control datepicker" @bind-Value="_filter.End" />
+        </div>
+    </div>
+    <div class="col row">
+        <div class="col">
+            @if (Providers is not null)
+            {
+                <select @bind="_filter.Provider.Id">
+                    @foreach (var item in Providers)
+                    {
+                        <option value="@item.Id">@item.Name</option>
+                    }
+                </select>
+            }
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <button @onclick="GetFilterElementsAsync"> Фильтр </button>
+        </div>
+    </div>
+</EditForm>
+@if (_orders is not null)
+{
+    <OrdersTable Orders="_orders" />
+}

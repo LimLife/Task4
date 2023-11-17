@@ -1,0 +1,42 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Protos\order.proto" />
+    <None Remove="Protos\Order\order.proto" />
+    <None Remove="Protos\Order\orderItem.proto" />
+    <None Remove="Protos\Order\provider.proto" />
+    <None Remove="Protos\Provaider\provider.proto" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.25.1" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.59.0" />
+    <PackageReference Include="Grpc.Net.Client.Web" Version="2.59.0" />
+    <PackageReference Include="Grpc.Net.ClientFactory" Version="2.59.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.59.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.13" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.13" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="Protos\OrderItem\order.proto" GrpcServices="Client">
+      <ProtRoot>Protos\</ProtRoot>
+    </Protobuf>
+    <Protobuf Include="Protos\OrderItem\orderItem.proto" GrpcServices="Client">
+      <ProtRoot>Protos\</ProtRoot>
+    </Protobuf>
+    <Protobuf Include="Protos\Order\order.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\Order\provider.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\Provaider\provider.proto" GrpcServices="Client" />
+  </ItemGroup>
+
+</Project>
