@@ -26,12 +26,13 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
 	</ItemGroup>
 
 	<ItemGroup>
-		<Protobuf Include="Protos\FilterProto\filter.proto" GrpcServices="Server" ProtPath ="Protos/FilterProto/" />
-		<Protobuf Include="Protos\OrderItemProto\orderitem.proto" GrpcServices="Server" ProtPath ="Protos/OrderItemProto/" />
-		<Protobuf Include="Protos\OrderProto\order.proto" GrpcServices="Server" ProtPath ="Protos/OrderProto/" />
-		<Protobuf Include="Protos\ProviderProto\provider.proto" GrpcServices="Server" ProtPath ="Protos/ProviderProto/"/>
+		<Protobuf Include="Protos\FilterProto\filter.proto" GrpcServices="Server" ProtPath="Protos/FilterProto/" />
+		<Protobuf Include="Protos\OrderItemProto\orderitem.proto" GrpcServices="Server" ProtPath="Protos/OrderItemProto/" />
+		<Protobuf Include="Protos\OrderProto\order.proto" GrpcServices="Server" ProtPath="Protos/OrderProto/" />
+		<Protobuf Include="Protos\ProviderProto\provider.proto" GrpcServices="Server" ProtPath="Protos/ProviderProto/" />
 	</ItemGroup>
 </Project>
