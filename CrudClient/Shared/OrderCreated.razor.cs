@@ -1,15 +1,20 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using OrderManagementSystem.Grpc.ProviderService;
+using Google.Protobuf.WellKnownTypes;
+using Microsoft.AspNetCore.Components;
 using CrudClient.Model;
+
 
 namespace CrudClient.Shared
 {
     public partial class OrderCreated : ComponentBase
     {
+        [Inject] public ProviderService.ProviderServiceClient ProviderService { get; set; }
         private Order _order;
         private List<Provider> _providers;
 
-        protected override void OnInitialized()
+        protected async Task OnInitializedAsync()
         {
+            var s =  await ProviderService.GetListProvidersAsync(new Empty());
             _order = new Order();
             _providers = new List<Provider>()
             {

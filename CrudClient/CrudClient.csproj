@@ -7,11 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Protos\order.proto" />
-    <None Remove="Protos\Order\order.proto" />
-    <None Remove="Protos\Order\orderItem.proto" />
-    <None Remove="Protos\Order\provider.proto" />
-    <None Remove="Protos\Provaider\provider.proto" />
+    <None Remove="Protos\FilterProto\filter.proto" />
+    <None Remove="Protos\OrderItemProto\orderitem.proto" />
+    <None Remove="Protos\OrderProto\order.proto" />
+    <None Remove="Protos\ProviderProto\provider.proto" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,15 +27,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Protobuf Include="Protos\OrderItem\order.proto" GrpcServices="Client">
-      <ProtRoot>Protos\</ProtRoot>
+    <Protobuf Include="Protos\FilterProto\filter.proto" GrpcServices="Client">
+      <ProtPath>Protos/FilterProto/</ProtPath>
     </Protobuf>
-    <Protobuf Include="Protos\OrderItem\orderItem.proto" GrpcServices="Client">
-      <ProtRoot>Protos\</ProtRoot>
+    <Protobuf Include="Protos\OrderItemProto\orderitem.proto" GrpcServices="Client">
+      <ProtPath>Protos/OrderItemProto/</ProtPath>
     </Protobuf>
-    <Protobuf Include="Protos\Order\order.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\Order\provider.proto" GrpcServices="Client" />
-    <Protobuf Include="Protos\Provaider\provider.proto" GrpcServices="Client" />
+    <Protobuf Include="Protos\OrderProto\order.proto" GrpcServices="Client">
+      <ProtPath>Protos/OrderProto/</ProtPath>
+    </Protobuf>
+    <Protobuf Include="Protos\ProviderProto\provider.proto" GrpcServices="Client">
+      <ProtPath>Protos/ProviderProto/</ProtPath>
+    </Protobuf>
   </ItemGroup>
 
 </Project>

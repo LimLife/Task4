@@ -1,16 +1,19 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "CrudClient.Grpc.Order";
+option csharp_namespace = "OrderManagementSystem.Grpc.OrderService";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
+
+import "Protos/ProviderProto/provider.proto";
 
 package order;
 
 service OrderService{
 	rpc GetOrder(GetOrderRequest)returns(OrderReply);
 	rpc GetListOrders(google.protobuf.Empty)returns(ListOrderRiply);
+	rpc IsStringParameterNumber(IsStringParameterRequest)returns(google.protobuf.BoolValue);
 	rpc CreateOrder(CreateOrderRequest)returns(OrderReply);
 	rpc UpdateOrder(UpdateOrderRequest)returns(OrderReply);
 	rpc DeleteOrder(DeleteOrderRequest)returns(google.protobuf.BoolValue);
@@ -19,14 +22,19 @@ service OrderService{
 message GetOrderRequest{
 	int32 id = 1;
 }
+message IsStringParameterRequest{
+	int32 idOrder =1;
+	string str = 2;
+}
+
 message CreateOrderRequest{
-	ProviderReply provider = 1;
+	provider.ProviderReply provider = 1;
 	string number = 2;
 	google.protobuf.Timestamp Date = 3;
 }
 message UpdateOrderRequest{
 	int32 id = 1;
-	ProviderReply provider = 2;
+	provider.ProviderReply provider = 2;
 	string number = 3;
 	google.protobuf.Timestamp Date = 4;
 }
@@ -35,16 +43,11 @@ message DeleteOrderRequest{
 }
 message OrderReply{
 	int32 id = 1;
-	ProviderReply provider = 2;
+	provider.ProviderReply provider = 2;
 	string number = 3;
 	google.protobuf.Timestamp Date = 4;
 
 }
 message ListOrderRiply{
 	repeated OrderReply orders = 1;
-}
-
-message ProviderReply{
-	int32 id = 1;
-	int32 providerId =2; 
 }

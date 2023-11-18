@@ -12,6 +12,7 @@ builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddDbContext<OrderDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("orderConnection")));
 builder.Services.AddGrpc(options => options.Interceptors.Add<CheckDBConnect>());
 
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<CheckDBConnect>();
 builder.WebHost.ConfigureKestrel(serverOptions =>
@@ -37,5 +38,8 @@ var app = builder.Build();
 app.UseCors();
 app.MapGrpcService<OrderApiService>();
 app.MapGrpcService<ProviderApiService>();
+
+app.UseSwagger();
+app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/swagger.json", "OrdersAPI"));
 
 app.Run();
