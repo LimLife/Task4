@@ -11,7 +11,7 @@ service ProviderService{
 }
 
 message ProviderReply{
-	int32 id =1;
+	int32 id = 1;
 	string name = 2;
 }
 message ListProviderReply{

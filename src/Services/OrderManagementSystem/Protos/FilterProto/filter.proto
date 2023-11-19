@@ -6,16 +6,13 @@ import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
 import "google/protobuf/timestamp.proto";
 
-import "Protos/ProviderProto/provider.proto";
-import "Protos/OrderItemProto/orderitem.proto";
 import "Protos/OrderProto/order.proto";
 
 package  filter;
 
 
 service FilterService{
-	rpc GetOrderByFilter(FilterOrderReply)returns(order.ListOrderRiply);
-	rpc GetOrderItemsByFilter(FilterOrderItemReply)returns(orderItem.ListOrderItemReply);
+	rpc GetOrderByFilter(FilterReply)returns(order.ListOrderRiply);
 }
 
 message FilterOrderReply{
@@ -23,10 +20,7 @@ message FilterOrderReply{
 	google.protobuf.Timestamp start = 2;
 	google.protobuf.Timestamp end = 3;
 	google.protobuf.Int32Value providerId = 4;
-}
-message FilterOrderItemReply{
 	google.protobuf.StringValue name = 1;
-	orderItem.DecimalValue quantity =2; 
 	google.protobuf.StringValue unit = 3;
 }
 

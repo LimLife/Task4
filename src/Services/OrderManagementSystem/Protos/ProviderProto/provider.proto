@@ -7,20 +7,12 @@ import "google/protobuf/empty.proto";
 package provider;
 
 service ProviderService{
-	rpc GetProviderByName(GetRequestByName)returns(ProviderReply);
-	rpc GetProviderById(GetRequestById)returns(ProviderReply);
 	rpc GetListProviders(google.protobuf.Empty)returns(ListProviderReply);
 }
 
 message ProviderReply{
-	int32 id =1;
+	int32 id = 1;
 	string name = 2;
-}
-message GetRequestById{
-	int32 id= 1;
-}
-message GetRequestByName{
-	string name = 1;
 }
 message ListProviderReply{
 	repeated ProviderReply provider = 1;
