@@ -1,16 +1,16 @@
 ﻿<CascadingValue Value="@OrderItemService">
-    @if (_isLoad)
-    {
-        <table class="table mt-4 border-bottom pt-3">
-            <thead>
-                <tr>
-                    <th>@nameof(_item.Name)</th>
-                    <th>@nameof(_item.Quantity)</th>
-                    <th>@nameof(_item.Unit)</th>
-                </tr>
-            </thead>
+    <table class="table mt-4 border-bottom pt-3">
+        <thead>
+            <tr>
+                <th>@nameof(_item.Name)</th>
+                <th>@nameof(_item.Quantity)</th>
+                <th>@nameof(_item.Unit)</th>
+            </tr>
+        </thead>
+        @if (_itemsOrder is not null)
+        {
             <tbody>
-                @foreach (var item in _items)
+                @foreach (var item in _itemsOrder)
                 {
                     var collapseId = $"collapse{item.Id}";
                     <tr>
@@ -28,14 +28,16 @@
                             </p>
                             <div class="collapse" id="@collapseId">
                                 <div class="card card-body">
-                                    <ItemEdit OrderItem="_items[item.Id]" />
+                                    @if (_itemsOrder is not null)
+                                    {
+                                        <ItemEdit OrderItem="item" />
+                                    }
                                 </div>
                             </div>
                         </td>
                     </tr>
                 }
             </tbody>
-            }
-        </table>
-    }
+        }
+    </table>
 </CascadingValue>

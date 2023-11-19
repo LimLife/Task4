@@ -3,22 +3,17 @@
 <PageTitle>Index</PageTitle>
 
 <div class="container-fluid">
-    <CascadingValue Value="@Providers">
-        <div id="created" class="container-xxl mt-4">
-            <OrderCreated />
-        </div>
-        <div id="all-order" class="container-xxl mt-4">
-            <div>
-                <span>Список всех заказов</span>
+    @if (_isLoad)
+    {
+        <CascadingValue Value="@Providers">
+            <div id="created" class="container-xxl mt-4">
+                <OrderCreated/>                 
             </div>
-            <div>
-                <OrdersTable Orders="@_orders" />
+            <div id="filter" class="container-xxl mt-4">
+                <FilterOrder />
             </div>
-        </div>
-        <div id="filter" class="container-xxl mt-4">
-            <FilterOrder />
-        </div>
-    </CascadingValue>
+        </CascadingValue>
+    }
 </div>
 
 

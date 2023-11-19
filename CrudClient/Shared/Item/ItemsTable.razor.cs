@@ -1,6 +1,7 @@
 ﻿using CrudClient.Grpc.OrderItemService;
 using Microsoft.AspNetCore.Components;
 using CrudClient.Model;
+using Grpc.Core;
 
 namespace CrudClient.Shared.Item
 {
@@ -8,33 +9,43 @@ namespace CrudClient.Shared.Item
     {
         [EditorRequired][Parameter] public int OrderId { get; set; }
         [CascadingParameter][Inject] public OrderItemService.OrderItemServiceClient OrderItemService { get; set; }
+        private List<OrderItem> _itemsOrder { get; set; }
 
         private OrderItem _item;
-        private List<OrderItem> _items;
-        private bool _isLoad = false;
         protected override async Task OnInitializedAsync()
         {
-            _items = new List<OrderItem?>();
-            var replyOrderItem = await OrderItemService.GetListOrderItemsByOrderIdAsync(new GetListOrderItemsByOrderIdRequest() { Id = OrderId });
-            if (replyOrderItem is not null)
+            _itemsOrder = new List<OrderItem>();
+            try
             {
-                _items = replyOrderItem.Order.Select(item => new OrderItem
+                var replyOrderItem = await OrderItemService.GetListOrderItemsByOrderIdAsync(new GetListOrderItemsByOrderIdRequest() { Id = OrderId });
+                if (replyOrderItem is not null)
                 {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Unit = item.Unit,
-                    Order = new Order { Id = OrderId }
-                }).ToList();
+                    _itemsOrder = replyOrderItem.Order.Select(item => new OrderItem
+                    {
+                        Id = item.Id,
+                        Name = item.Name,
+                        Unit = item.Unit,
+                        Order = new Order { Id = OrderId }
+                    }).ToList();
+                };
+                await Console.Out.WriteLineAsync($"{replyOrderItem.Order.Count}");
             }
-        }
-        protected override void OnParametersSet()
-        {
-            if (_items is not null)
-                _isLoad = true;
+            catch (RpcException ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Status.Detail);
+            }
         }
         private async Task DeleteOrderItemAsync(int id)
         {
-            await OrderItemService.DeleteOrderItemAsync(new DeleteOrderItemReques() { Id = id });
+            try
+            {
+                await OrderItemService.DeleteOrderItemAsync(new DeleteOrderItemReques() { Id = id });
+            }
+            catch (RpcException ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Status.Detail);
+            }
         }
     }
 }
+

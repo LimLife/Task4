@@ -1,8 +1,7 @@
-﻿using ItemManagementSystem.Grpc.OrderItemService;
-using OrderManagementSystem.Grpc.ProviderService;
-using OrderManagementSystem.Grpc.OrderService;
+﻿using CrudClient.Grpc.OrderItemService;
+using CrudClient.Grpc.ProviderService;
 using Google.Protobuf.WellKnownTypes;
-using Google.Protobuf;
+using CrudClient.Grpc.OrderService;
 using CrudClient.Model;
 
 namespace CrudClient.Tools
@@ -61,44 +60,7 @@ namespace CrudClient.Tools
                 Name = provider.Name,
             };
         }
-
-
-        public static Order ConvertRequestToOrder<T>(T request) where T : IMessage
-        {
-            if (request is GetOrderRequest get)
-            {
-                return new Order()
-                {
-                    Id = get.Id,
-                };
-            }
-            else if (request is CreateOrderRequest create)
-            {
-                return new Order
-                {
-                    Number = create.Number,
-                    DateTime = create.Date.ToDateTime(),
-                    Provider = GetProvider(create.Provider),
-                };
-            }
-            else if (request is UpdateOrderRequest update)
-            {
-                return new Order
-                {
-                    Id = update.Id,
-                    Number = update.Number,
-                    DateTime = update.Date.ToDateTime(),
-                    Provider = GetProvider(update.Provider)
-                };
-            }
-            else if (request is DeleteOrderRequest delete)
-            {
-                return new Order { Id = delete.Id, };
-            }
-            return null;
-        }
-
-
+       
         private const decimal NanoFactor = 1_000_000_000;
 
         public static decimal GetDecimal(DecimalValue value)

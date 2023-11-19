@@ -1,43 +1,51 @@
-﻿using ItemManagementSystem.Grpc.FilterService;
-using Microsoft.AspNetCore.Components;
-using CrudClient.Model;
-using CrudClient.Tools;
+﻿    using Microsoft.AspNetCore.Components;
+    using CrudClient.Grpc.FilterService;
+    using CrudClient.Model;
+    using CrudClient.Tools;
+    using Grpc.Core;
 
-namespace CrudClient.Shared
-{
-    public partial class FilterOrder : ComponentBase
+    namespace CrudClient.Shared
     {
-        [CascadingParameter] public List<Provider> Providers { get; set; }
-        [Inject] public FilterService.FilterServiceClient FilterServiceClient { get; set; }
-        [Parameter] public List<Order> Orders { get; set; }
-        private FilterModel _filter;
-        private bool _isOrders = false;
-        protected override void OnInitialized()
+        public partial class FilterOrder : ComponentBase
         {
-            _filter = new FilterModel
+            [CascadingParameter] public List<Provider> Providers { get; set; }
+            [Inject] public FilterService.FilterServiceClient FilterServiceClient { get; set; }
+            [Parameter] public List<Order> Orders { get; set; }
+            private FilterModel _filter;
+            private bool _isOrders;
+            protected override void OnInitialized()
             {
-                Provider = Providers[0]
-            };
-        }
-        protected override void OnParametersSet()
-        {
-            if (Orders is not null)
-                _isOrders = true;
-            _isOrders = false;
-        }
-        private async Task GetFilterElementsAsync()
-        {
-            var items = await FilterServiceClient.GetOrderByFilterAsync(new FilterOrderReply
+                Orders = new List<Order>();
+                _filter = new FilterModel
+                {
+                    Provider = Providers[0]
+                };
+            }
+            protected override void OnParametersSet()
             {
-                Number = _filter.Number,
-                ProviderId = _filter?.Provider?.Id,
-                End = RpcCovert.GetTimestamp(_filter.End),
-                Start = RpcCovert.GetTimestamp(_filter.Start)
-                //Name
-                //Unit
-            });
-            Orders = items.Orders.Select(item => RpcCovert.GetOrder(item)).ToList();
-        }
+                _isOrders = Orders is not null;
+            }
+            private async Task GetFilterElementsAsync()
+            {
+                try
+                {
+                    var items = await FilterServiceClient.GetOrderByFilterAsync(new FilterReply
+                    {
+                        Number = _filter.Number,
+                        ProviderId = _filter?.Provider?.Id,
+                        End = RpcCovert.GetTimestamp(_filter.End),
+                        Start = RpcCovert.GetTimestamp(_filter.Start),
+                        Name = _filter.Name,
+                        Unit = _filter.Unit
+                    });
+                    Orders = items.Orders.Select(item => RpcCovert.GetOrder(item)).ToList();
+                    StateHasChanged();
+                }
+                catch (RpcException ex)
+                {
+                    await Console.Out.WriteLineAsync(ex.Status.Detail);
+                }
+            }
 
+        }
     }
-}

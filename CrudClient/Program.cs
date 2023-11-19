@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using ItemManagementSystem.Grpc.OrderItemService;
-using OrderManagementSystem.Grpc.ProviderService;
-using ItemManagementSystem.Grpc.FilterService;
-using OrderManagementSystem.Grpc.OrderService;
 using Microsoft.AspNetCore.Components.Web;
+using CrudClient.Grpc.OrderItemService;
+using CrudClient.Grpc.ProviderService;
+using CrudClient.Grpc.FilterService;
+using CrudClient.Grpc.OrderService;
 using Grpc.Net.Client.Web;
 using CrudClient;
 

@@ -1,9 +1,9 @@
 ﻿@page "/order/{orderId:int}"
-
+<PageTitle>Order</PageTitle>
 <div class="container-fluid">
     @if (_isLoad)
     {
-        <EditForm Model="@_order" OnInvalidSubmit="@HandleValidSubmit">
+        <EditForm Model="@_order" OnInvalidSubmit="@HandleValidSubmitAsync">
             <DataAnnotationsValidator />
             <ValidationSummary />
 
@@ -28,15 +28,16 @@
             </div>
         </EditForm>
         <div>
-            <button @onclick="DeleteOrder">Удалить</button>
+            <button @onclick="@DeleteOrdersAsync">Удалить</button>
         </div>
     }
 </div>
-<div id="items">
+<div id="added-orderitem" class="container-xxl m-1">
     @if (_order is not null)
     {
-        <div>
-            <ItemsTable OrderId="@_order.Id" />
-        </div>
+        <CreateItem OrderId="@OrderId" />
     }
+</div>
+<div id="items">
+    <ItemsTable OrderId="@OrderId" />
 </div>

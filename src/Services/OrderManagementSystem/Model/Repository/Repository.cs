@@ -67,6 +67,7 @@ namespace OrderManagementSystem.Model.Repository
             await _context
             .OrderItems
             .AsNoTracking()
+            .Include(order => order.Order)
             .Where(item => item.Order.Id == id)
             .ToListAsync();
         public async Task<List<OrderItem>?> GetOrdersItemsAsync() =>
@@ -115,10 +116,7 @@ namespace OrderManagementSystem.Model.Repository
         #region Filter    
         public async Task<List<Order>?> GetOrdersByFilterAsync(Filter filter) =>
             await _context
-            .Orders
-            .AsNoTracking()
-            .Include(e => e.Provider)
-            .ThenInclude(item => item.Orders)
+            .Orders.Include(e => e.Provider)
             .Where(order =>
             (string.IsNullOrEmpty(filter.Number) || order.Number == filter.Number)
             && order.ProviderId == filter.ProviderID
