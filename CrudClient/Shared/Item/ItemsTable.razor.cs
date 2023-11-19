@@ -1,7 +1,6 @@
-﻿using ItemManagementSystem.Grpc.OrderItemService;
+﻿using CrudClient.Grpc.OrderItemService;
 using Microsoft.AspNetCore.Components;
 using CrudClient.Model;
-using CrudClient.Tools;
 
 namespace CrudClient.Shared.Item
 {
@@ -23,7 +22,6 @@ namespace CrudClient.Shared.Item
                 {
                     Id = item.Id,
                     Name = item.Name,
-                    Quantity = RpcCovert.GetDecimal(item.Quantity),
                     Unit = item.Unit,
                     Order = new Order { Id = OrderId }
                 }).ToList();

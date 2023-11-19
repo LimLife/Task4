@@ -12,17 +12,7 @@ namespace OrderManagementSystem.Model.Repository
 
 
         #region Provider
-        public async Task<Provider?> ProviderByIdAsync(int id) =>
-           await _context
-           .Providers
-           .AsNoTracking()
-           .FirstOrDefaultAsync(idProvider => idProvider.Id == id);
-        public async Task<Provider?> ProviderByNameAsync(string name) =>
-            await _context
-            .Providers
-            .AsNoTracking()
-            .FirstOrDefaultAsync(provider => provider.Name == name);
-        public async Task<List<Provider>?> ProvidersAsync() =>
+        public async Task<List<Provider>?> GetProvidersAsync() =>
             await _context
             .Providers
             .AsNoTracking()
@@ -35,23 +25,13 @@ namespace OrderManagementSystem.Model.Repository
             .AsNoTracking()
             .Include(provider => provider.Provider)
             .FirstOrDefaultAsync(o => o.Id == id);
-        public async Task<Provider?> GetProviderByIdAsync(int id) =>
-            await _context
-            .Providers
-            .AsNoTracking()
-            .FirstOrDefaultAsync(o => o.Id == id);
         public async Task<List<Order>?> GetOrdersAsync() =>
             await _context
             .Orders
             .AsNoTracking()
             .Include(provider => provider.Provider)
             .ToListAsync();
-        public async Task<List<Provider>?> GetProvidersAsync() =>
-            await _context
-            .Providers
-            .AsNoTracking()
-            .ToListAsync();
-        public async Task<bool> IsContainsNameInOrderAcync(int orderItemId, string nameToItemOrder)
+        public async Task<bool> IsContainsNameInOrderAsync(int orderItemId, string nameToItemOrder)
         {
             var item = await _context.Orders.AsNoTracking().FirstOrDefaultAsync(o => o.Id == orderItemId);
             if (item is not null && item.Number == nameToItemOrder)
@@ -84,7 +64,11 @@ namespace OrderManagementSystem.Model.Repository
         #endregion
         #region OrderItem
         public async Task<List<OrderItem>?> GetOrdersItemByOrderIdAsync(int id) =>
-            await _context.OrderItems.AsNoTracking().Where(item => item.Order.Id == id).ToListAsync();
+            await _context
+            .OrderItems
+            .AsNoTracking()
+            .Where(item => item.Order.Id == id)
+            .ToListAsync();
         public async Task<List<OrderItem>?> GetOrdersItemsAsync() =>
            await _context
            .OrderItems
@@ -128,27 +112,21 @@ namespace OrderManagementSystem.Model.Repository
             return result > 0;
         }
         #endregion
-        #region Filter
-        public async Task<List<OrderItem>?> GetOrderItemsByFilterAsync(FilterOrderItem filter) =>
-          await _context
-          .OrderItems
-          .AsNoTracking()
-          .Where(orderItem =>
-          (string.IsNullOrEmpty(filter.Name) || orderItem.Name == filter.Name)
-          && (string.IsNullOrEmpty(filter.Unit) || orderItem.Unit == filter.Unit
-          && orderItem.Quantity == filter.Quantity))
-          .ToListAsync();
-        public async Task<List<Order>?> GetOrdersByFilterAsync(FilterOrder filter) =>
-         await _context
-         .Orders
-         .AsNoTracking()
-         .Include(e => e.Provider)
-         .Where(order =>
+        #region Filter    
+        public async Task<List<Order>?> GetOrdersByFilterAsync(Filter filter) =>
+            await _context
+            .Orders
+            .AsNoTracking()
+            .Include(e => e.Provider)
+            .ThenInclude(item => item.Orders)
+            .Where(order =>
             (string.IsNullOrEmpty(filter.Number) || order.Number == filter.Number)
-            && (filter.ProviderID == 0 || order.ProviderId == filter.ProviderID)
+            && order.ProviderId == filter.ProviderID
             && (filter.Start == DateTime.MinValue || order.Date >= filter.Start)
-            && (filter.End == DateTime.MinValue || order.Date <= filter.End))
-         .ToListAsync();
+            && (filter.End == DateTime.MinValue || order.Date <= filter.End)
+            && (string.IsNullOrEmpty(filter.Name) || order.OrderItems.All(item => item.Name == filter.Name))
+            && (string.IsNullOrEmpty(filter.Unit) || order.OrderItems.All(item => item.Unit == filter.Unit)))
+            .ToListAsync();
         #endregion
         public async Task<bool> IsConnectAsync() =>
            await _context.Database.CanConnectAsync();

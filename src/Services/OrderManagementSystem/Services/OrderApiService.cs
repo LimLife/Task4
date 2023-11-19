@@ -20,7 +20,7 @@ namespace OrderManagementSystem.Services
             {
                 _ = new RpcException(new Status(StatusCode.NotFound, $"Order by Id {request.IdOrder}"));
             }
-            var result = await _repository.IsContainsNameInOrderAcync(request.IdOrder, request.Str);
+            var result = await _repository.IsContainsNameInOrderAsync(request.IdOrder, request.Str);
             return new BoolValue { Value = result };
         }
         public override async Task<OrderReply> GetOrder(GetOrderRequest request, ServerCallContext context)

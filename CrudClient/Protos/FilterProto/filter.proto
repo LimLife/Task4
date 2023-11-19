@@ -15,13 +15,13 @@ service FilterService{
 	rpc GetOrderByFilter(FilterReply)returns(order.ListOrderRiply);
 }
 
-message FilterOrderReply{
+message FilterReply{
 	google.protobuf.StringValue number = 1;
 	google.protobuf.Timestamp start = 2;
 	google.protobuf.Timestamp end = 3;
 	google.protobuf.Int32Value providerId = 4;
-	google.protobuf.StringValue name = 1;
-	google.protobuf.StringValue unit = 3;
+	google.protobuf.StringValue name = 5;
+	google.protobuf.StringValue unit = 6;
 }
 
 

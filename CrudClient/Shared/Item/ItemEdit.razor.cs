@@ -1,8 +1,8 @@
-﻿using ItemManagementSystem.Grpc.OrderItemService;
+﻿using CrudClient.Grpc.OrderItemService;
 using Microsoft.AspNetCore.Components;
+using CrudClient.Grpc.OrderService;
 using CrudClient.Model;
 using CrudClient.Tools;
-using OrderManagementSystem.Grpc.OrderService;
 
 namespace CrudClient.Shared.Item
 {
