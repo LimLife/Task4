@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "ItemManagementSystem.Grpc.OrderItemService";
+option csharp_namespace = "CrudClient.Grpc.OrderItemService";
 
 import "google/protobuf/empty.proto";
 import "google/protobuf/wrappers.proto";
@@ -8,7 +8,6 @@ import "google/protobuf/wrappers.proto";
 package orderItem;
 
 service OrderItemService{
-	rpc GetOrderItem(GetOrderItemReques)returns(OrderItemReply);
 	rpc GetListOrder(google.protobuf.Empty)returns(ListOrderItemReply);
 	rpc GetListOrderItemsByOrderId(GetListOrderItemsByOrderIdRequest)returns(ListOrderItemReply);
 	rpc CreateOrderItem(CreateOrderItemReques)returns(OrderItemReply);
@@ -24,9 +23,6 @@ message OrderItemReply{
 	string name = 3;
 	DecimalValue quantity =4;
 	string unit =5;
-}
-message GetOrderItemReques{
-	int32 id = 1;
 }
 
 message CreateOrderItemReques{
