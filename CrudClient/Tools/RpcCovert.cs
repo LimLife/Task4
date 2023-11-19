@@ -1,11 +1,11 @@
 ﻿using ItemManagementSystem.Grpc.OrderItemService;
 using OrderManagementSystem.Grpc.ProviderService;
 using OrderManagementSystem.Grpc.OrderService;
-using OrderManagementSystem.Model.Entity;
 using Google.Protobuf.WellKnownTypes;
 using Google.Protobuf;
+using CrudClient.Model;
 
-namespace OrderManagementSystem.Tools
+namespace CrudClient.Tools
 {
     public static class RpcCovert
     {
@@ -15,7 +15,7 @@ namespace OrderManagementSystem.Tools
             {
                 Id = reply.Id,
                 Number = reply.Number,
-                Date = reply.Date.ToDateTime(),
+                DateTime = reply.Date.ToDateTime(),
                 Provider = GetProvider(reply.Provider),
             };
         }
@@ -33,7 +33,7 @@ namespace OrderManagementSystem.Tools
             {
                 Id = order.Id,
                 Number = order.Number,
-                Date = Timestamp.FromDateTime(order.Date.ToUniversalTime()),
+                Date = Timestamp.FromDateTime(order.DateTime.ToUniversalTime()),
                 Provider = GetProviderReply(order.Provider)
             };
         }
@@ -77,7 +77,7 @@ namespace OrderManagementSystem.Tools
                 return new Order
                 {
                     Number = create.Number,
-                    Date = create.Date.ToDateTime(),
+                    DateTime = create.Date.ToDateTime(),
                     Provider = GetProvider(create.Provider),
                 };
             }
@@ -87,7 +87,7 @@ namespace OrderManagementSystem.Tools
                 {
                     Id = update.Id,
                     Number = update.Number,
-                    Date = update.Date.ToDateTime(),
+                    DateTime = update.Date.ToDateTime(),
                     Provider = GetProvider(update.Provider)
                 };
             }

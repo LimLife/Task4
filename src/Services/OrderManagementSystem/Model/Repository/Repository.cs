@@ -54,7 +54,7 @@ namespace OrderManagementSystem.Model.Repository
         public async Task<bool> IsContainsNameInOrderAcync(int orderItemId, string nameToItemOrder)
         {
             var item = await _context.Orders.AsNoTracking().FirstOrDefaultAsync(o => o.Id == orderItemId);
-            if (item.Number == nameToItemOrder)
+            if (item is not null && item.Number == nameToItemOrder)
                 return true;
             return false;
         }
@@ -83,6 +83,8 @@ namespace OrderManagementSystem.Model.Repository
         }
         #endregion
         #region OrderItem
+        public async Task<List<OrderItem>?> GetOrdersItemByOrderIdAsync(int id) =>
+            await _context.OrderItems.AsNoTracking().Where(item => item.Order.Id == id).ToListAsync();
         public async Task<List<OrderItem>?> GetOrdersItemsAsync() =>
            await _context
            .OrderItems

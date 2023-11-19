@@ -1,4 +1,7 @@
 ﻿<EditForm Model="@_filter" OnSubmit="@GetFilterElementsAsync">
+    <div>
+        <span>Фильтр по Заказу</span>
+    </div>
     <div class="input-group">
         <span class="input-group-text">Number:</span>
         <InputText class="form-control" placeholder="Number" @bind-Value="_filter.Number" />
@@ -27,13 +30,26 @@
             }
         </div>
     </div>
+    <div>
+        <span>Фильтр по предмету заказа</span>
+        <div>
+            <div class="input-group">
+                <span class="input-group-text">Name:</span>
+                <InputText class="form-control" placeholder="Name" @bind-Value="_filter.Name" />
+            </div>
+            <div class="input-group">
+                <span class="input-group-text">Unit:</span>
+                <InputText class="form-control" placeholder="Unit" @bind-Value="_filter.Unit" />
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-2">
-            <button @onclick="GetFilterElementsAsync"> Фильтр </button>
+            <button type="submit"> Фильтр </button>
         </div>
     </div>
 </EditForm>
-@if (_orders is not null)
+@if (_isOrders)
 {
-    <OrdersTable Orders="_orders" />
+    <OrdersTable Orders="Orders" />
 }

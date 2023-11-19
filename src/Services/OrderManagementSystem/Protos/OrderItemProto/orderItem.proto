@@ -10,11 +10,15 @@ package orderItem;
 service OrderItemService{
 	rpc GetOrderItem(GetOrderItemReques)returns(OrderItemReply);
 	rpc GetListOrder(google.protobuf.Empty)returns(ListOrderItemReply);
+	rpc GetListOrderItemsByOrderId(GetListOrderItemsByOrderIdRequest)returns(ListOrderItemReply);
 	rpc CreateOrderItem(CreateOrderItemReques)returns(OrderItemReply);
 	rpc UpdateOrderItem(UpdateOrderItemReques)returns(OrderItemReply);
 	rpc DeleteOrderItem(DeleteOrderItemReques)returns(google.protobuf.BoolValue);
-}
 
+}
+message GetListOrderItemsByOrderIdRequest{
+	int32 id = 1;
+}
 message OrderItemReply{
 	int32 id = 1;
 	int32 order = 2;

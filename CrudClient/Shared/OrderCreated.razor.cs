@@ -1,37 +1,33 @@
-﻿using OrderManagementSystem.Grpc.ProviderService;
-using Google.Protobuf.WellKnownTypes;
+﻿using OrderManagementSystem.Grpc.OrderService;
 using Microsoft.AspNetCore.Components;
 using CrudClient.Model;
-
+using CrudClient.Tools;
 
 namespace CrudClient.Shared
 {
     public partial class OrderCreated : ComponentBase
     {
-        [Inject] public ProviderService.ProviderServiceClient ProviderService { get; set; }
+        [CascadingParameter] public List<Provider> Providers { get; set; }
+        [Inject] public OrderService.OrderServiceClient OrderService { get; set; }
         private Order _order;
-        private List<Provider> _providers;
 
-        protected async Task OnInitializedAsync()
+        protected override void OnInitialized()
         {
-            var s =  await ProviderService.GetListProvidersAsync(new Empty());
-            _order = new Order();
-            _providers = new List<Provider>()
+            _order = new Order
             {
-                new Provider() { Id =1, Name ="Alla"},
-                new Provider() { Id =2, Name ="Ira"},
-                new Provider() { Id =3, Name ="Eva"},
-                new Provider() { Id =4, Name ="Anjela"},
-                new Provider() { Id =5, Name ="Alesya"}
+                Provider = Providers[0]
             };
-            _order.Provider = _providers.First();
         }
 
-        private async Task CreatedOrder()
+        private async Task CreatedOrderHandlerAsync()
         {
-            await Task.Delay(1000);
-            await Console.Out.WriteLineAsync($"{_order.Id}:{_order.Number}: {_order.DateTime}:{_order.Provider.Name}");
-            await Console.Out.WriteLineAsync("Created");
+            await OrderService.CreateOrderAsync(new CreateOrderRequest
+            {
+                Number = _order.Number,
+                Date = RpcCovert.GetTimestamp(_order.DateTime),
+                Provider = RpcCovert.GetProviderReply(_order.Provider)
+            });
+            _order = new Order { Provider = Providers.First() };
         }
     }
 }

@@ -1,39 +1,42 @@
-﻿@page "/order/{orderId}"
+﻿@page "/order/{orderId:int}"
 
 <div class="container-fluid">
-    <EditForm Model="@_order" OnInvalidSubmit="@HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+    @if (_isLoad)
+    {
+        <EditForm Model="@_order" OnInvalidSubmit="@HandleValidSubmit">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
 
-        <p>Текущие данные:</p>
-        <p>Id: @_order.Id</p>
-        <p>Number: @_order.Number</p>
-        <p>DateTime: @_order.DateTime</p>
-        <p>Provider: @_order.Provider.Name</p>
+            <p>Текущие данные:</p>
+            <p>Id: @_order.Id</p>
+            <p>Number: @_order.Number</p>
+            <p>DateTime: @_order.DateTime</p>
+            <p>Provider: @_order.Provider.Name</p>
 
-        <p>Введите новые данные:</p>
+            <p>Введите новые данные:</p>
 
-        <InputText id="number" @bind-Value="_order.Number" />
-        <InputDate id="dateTime" @bind-Value="_order.DateTime" />
-        <InputSelect id="provider" @bind-Value="_order.Provider.Id">
-            @foreach (var provider in _providers)
-            {
-                <option value="@provider.Id">@provider.Name</option>
-            }
-        </InputSelect>
-        <button type="submit">Сохранить</button>
-        <div id="table-ordersItem">
+            <InputText id="number" @bind-Value="_order.Number" />
+            <InputDate id="dateTime" @bind-Value="_order.DateTime" />
+            <InputSelect id="provider" @bind-Value="_order.Provider.Id">
+                @foreach (var provider in _providers)
+                {
+                    <option value="@provider.Id">@provider.Name</option>
+                }
+            </InputSelect>
+            <button type="submit">Сохранить</button>
+            <div id="table-ordersItem">
+            </div>
+        </EditForm>
+        <div>
+            <button @onclick="DeleteOrder">Удалить</button>
         </div>
-    </EditForm>
-    <div>
-        <button @onclick="DeleteOrder">Удалить</button>
-    </div>
+    }
 </div>
 <div id="items">
     @if (_order is not null)
     {
         <div>
-            <ItemsTable />
+            <ItemsTable OrderId="@_order.Id" />
         </div>
     }
 </div>

@@ -1,52 +1,42 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using ItemManagementSystem.Grpc.OrderItemService;
+using Microsoft.AspNetCore.Components;
 using CrudClient.Model;
+using CrudClient.Tools;
 
 namespace CrudClient.Shared.Item
 {
     public partial class ItemsTable : ComponentBase
     {
+        [EditorRequired][Parameter] public int OrderId { get; set; }
+        [CascadingParameter][Inject] public OrderItemService.OrderItemServiceClient OrderItemService { get; set; }
+
         private OrderItem _item;
         private List<OrderItem> _items;
-        protected override void OnInitialized()
+        private bool _isLoad = false;
+        protected override async Task OnInitializedAsync()
         {
-            _items = new List<OrderItem>()
+            _items = new List<OrderItem?>();
+            var replyOrderItem = await OrderItemService.GetListOrderItemsByOrderIdAsync(new GetListOrderItemsByOrderIdRequest() { Id = OrderId });
+            if (replyOrderItem is not null)
             {
-                new OrderItem
+                _items = replyOrderItem.Order.Select(item => new OrderItem
                 {
-                      Id =1,
-                      Name = "Qwerty",
-                      Quantity = 353431.008M,
-                      Unit = "sdfsdf",
-                       Order = new Order()
-                },
-                 new OrderItem
-                {
-                      Id =2,
-                      Name = "Jora",
-                      Quantity = 0.00003M,
-                      Unit = "sdfsdf",
-                      Order = new Order()
-                }
-            };
-            _item = new OrderItem()
-            {
-                Name = "",
-                Quantity = 0,
-                Unit = "",
-                Id = 1,
-                Order = new Order
-                {
-                    Id = 1,
-                    DateTime = DateTime.Now,
-                    Number = "",
-                    Provider = new Provider { Id = 1, Name = "" }
-                }
-            };
+                    Id = item.Id,
+                    Name = item.Name,
+                    Quantity = RpcCovert.GetDecimal(item.Quantity),
+                    Unit = item.Unit,
+                    Order = new Order { Id = OrderId }
+                }).ToList();
+            }
         }
-
+        protected override void OnParametersSet()
+        {
+            if (_items is not null)
+                _isLoad = true;
+        }
         private async Task DeleteOrderItemAsync(int id)
         {
-            await Console.Out.WriteLineAsync($"Deleted:{id}");
+            await OrderItemService.DeleteOrderItemAsync(new DeleteOrderItemReques() { Id = id });
         }
     }
 }

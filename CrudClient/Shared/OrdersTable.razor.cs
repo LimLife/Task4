@@ -13,10 +13,6 @@ namespace CrudClient.Shared
         {
             _order = new Order();
         }
-        protected override void OnParametersSet()
-        {
-           // Orders = new List<Order>();
-        }
         private void NavigateToOrder(int orderId)
         {
             NavigationManager.NavigateTo($"/order/{orderId}");

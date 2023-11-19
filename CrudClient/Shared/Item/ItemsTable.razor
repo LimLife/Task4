@@ -1,39 +1,41 @@
-﻿<table class="table mt-4 border-bottom pt-3">
-    <thead>
-        <tr>
-            <th>@nameof(_item.Name)</th>
-            <th>@nameof(_item.Quantity)</th>
-            <th>@nameof(_item.Unit)</th>
-        </tr>
-    </thead>
-    @if (_items is not null)
+﻿<CascadingValue Value="@OrderItemService">
+    @if (_isLoad)
     {
-        <tbody>
-            @foreach (var item in _items)
-            {
-                var collapseId = $"collapse{item.Id}";
+        <table class="table mt-4 border-bottom pt-3">
+            <thead>
                 <tr>
-                    <td>@item.Name</td>
-                    <td>@item.Quantity</td>
-                    <td>@item.Unit</td>
-                    <td>
-                        <p class="d-inline-flex gap-1 row">
-                            <a class="btn btn-primary col" data-bs-toggle="collapse" href="#@collapseId" role="button" aria-expanded="false" aria-controls="collapse">
-                                Редактировать детали заказа @item.Id
-                            </a>
-                            <a class="col" @onclick="@(()=>DeleteOrderItemAsync(item.Id))">
-                                Удалить деталь заказа
-                            </a>
-                        </p>
-                        <div class="collapse" id="@collapseId">
-                            <div class="card card-body">
-                                <ItemEdit ItemID="@item.Id" />
-                            </div>
-                        </div>
-                    </td>
+                    <th>@nameof(_item.Name)</th>
+                    <th>@nameof(_item.Quantity)</th>
+                    <th>@nameof(_item.Unit)</th>
                 </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in _items)
+                {
+                    var collapseId = $"collapse{item.Id}";
+                    <tr>
+                        <td>@item.Name</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Unit</td>
+                        <td>
+                            <p class="d-inline-flex gap-1 row">
+                                <a class="btn btn-primary col" data-bs-toggle="collapse" href="#@collapseId" role="button" aria-expanded="false" aria-controls="collapse">
+                                    Редактировать детали заказа @item.Id
+                                </a>
+                                <a class="col" @onclick="@(() => DeleteOrderItemAsync(item.Id))">
+                                    Удалить деталь заказа
+                                </a>
+                            </p>
+                            <div class="collapse" id="@collapseId">
+                                <div class="card card-body">
+                                    <ItemEdit OrderItem="_items[item.Id]" />
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
             }
-        </tbody>
+        </table>
     }
-
-</table>
+</CascadingValue>

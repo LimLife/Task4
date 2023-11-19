@@ -1,20 +1,17 @@
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using OrderManagementSystem.Model.Repository;
 using OrderManagementSystem.Model.DataBase;
-using OrderManagementSystem.Middleware;
 using System.Security.Authentication;
 using OrderManagementSystem.Services;
 using Microsoft.EntityFrameworkCore;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddDbContext<OrderDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("orderConnection")));
-builder.Services.AddGrpc(options => options.Interceptors.Add<CheckDBConnect>());
+builder.Services.AddGrpc();
 
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddSingleton<CheckDBConnect>();
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     serverOptions.ConfigureEndpointDefaults(listenOptions =>
@@ -31,15 +28,21 @@ builder.Services.AddCors(polici => polici.AddPolicy("AllowAll", options =>
     options.AllowAnyOrigin()
            .AllowAnyMethod()
            .AllowAnyHeader()
-           .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding");
+           .WithExposedHeaders("Grpc-Status", "Grpc-Message", "Grpc-Encoding", "Grpc-Accept-Encoding")
+           .WithOrigins("https://localhost:7219", "http://localhost:5133");
 }));
 
 var app = builder.Build();
-app.UseCors();
-app.MapGrpcService<OrderApiService>();
-app.MapGrpcService<ProviderApiService>();
 
-app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/swagger.json", "OrdersAPI"));
+app.UseRouting();
+app.UseGrpcWeb(new GrpcWebOptions { DefaultEnabled = true });
+app.UseCors();
+
+
+app.MapGrpcService<OrderApiService>().RequireCors("AllowAll");
+app.MapGrpcService<ProviderApiService>().RequireCors("AllowAll");
+app.MapGrpcService<FilterApiService>().RequireCors("AllowAll");
+app.MapGrpcService<OrderItemApiService>().RequireCors("AllowAll");
+
 
 app.Run();
