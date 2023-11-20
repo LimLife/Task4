@@ -10,7 +10,6 @@ namespace OrderManagementSystem.Model.Repository
         private readonly OrderDB _context;
         public Repository(OrderDB context) => _context = context;
 
-
         #region Provider
         public async Task<List<Provider>?> GetProvidersAsync() =>
             await _context
@@ -21,7 +20,11 @@ namespace OrderManagementSystem.Model.Repository
         #region Order  
         public async Task<bool> IsContainsProviderInOrderAsync(int providerId, string numberOrder)
         {
-            var item = await _context.Orders.AsNoTracking().FirstOrDefaultAsync(order => order.ProviderId == providerId && order.Number == numberOrder);
+            var item = await _context
+                .Orders
+                .AsNoTracking()
+                .FirstOrDefaultAsync(order => order.ProviderId == providerId && order.Number == numberOrder);
+
             if (item is not null && item.Number == numberOrder) return true;
             return false;
         }
@@ -29,8 +32,8 @@ namespace OrderManagementSystem.Model.Repository
             await _context
             .Orders
             .AsNoTracking()
+            .Include(provier => provier.Provider)
             .FirstOrDefaultAsync(o => o.Id == id);
-      
         public async Task<bool> IsContainsNameInOrderAsync(int orderItemId, string nameToItemOrder)
         {
             var item = await _context.Orders.AsNoTracking().FirstOrDefaultAsync(o => o.Id == orderItemId);
@@ -50,16 +53,21 @@ namespace OrderManagementSystem.Model.Repository
         public async Task<Order?> TryUpdateOrderAsync(Order order)
         {
             if (order is null) return null;
-            _context.Entry<Order>(order).State = EntityState.Modified;
+            var existingOrder = await _context.Orders.FindAsync(order.Id);
+            if (existingOrder is null) return null;
+            existingOrder.ProviderId = order.Provider.Id;
+            existingOrder.Number = order.Number;
+            existingOrder.Date = order.Date;
             await _context.SaveChangesAsync();
-            return order;
+            return existingOrder;
         }
         public async Task<bool> TryDeleteOrderAsync(int id)
         {
-            var order = new Order { Id = id };
-            _context.Entry<Order>(order).State = EntityState.Deleted;
+            var item = await _context.OrderItems.FindAsync(id);
+            _context.OrderItems.Remove(item);
+            await _context.SaveChangesAsync();
             var result = await _context.SaveChangesAsync();
-            return result > 0;
+            return result < 0;
         }
         #endregion
         #region OrderItem
@@ -95,22 +103,21 @@ namespace OrderManagementSystem.Model.Repository
         public async Task<OrderItem?> UpdateOrderItemAsync(OrderItem item)
         {
             if (item is null) return null;
-            _context.Entry<OrderItem>(item).State = EntityState.Modified;
+            var existingItem = await _context.OrderItems.FindAsync(item.Id);
+            if (existingItem is null) return null;
+            existingItem.Name = item.Name;
+            existingItem.Quantity = item.Quantity;
+            existingItem.Unit = item.Unit;
             await _context.SaveChangesAsync();
-
-            var createdItem = await _context
-                .OrderItems
-                .AsNoTracking()
-                .FirstOrDefaultAsync(id => id.Id == item.Id);
-            if (createdItem is null) return null;
-            return createdItem;
+            return existingItem;
         }
         public async Task<bool> DeleteOrderItemAsync(int id)
         {
-            var item = new OrderItem() { Id = id };
-            _context.Entry<OrderItem>(item).State = EntityState.Deleted;
+            var item = await _context.OrderItems.FindAsync(id);
+            _context.OrderItems.Remove(item);
+            await _context.SaveChangesAsync();
             var result = await _context.SaveChangesAsync();
-            return result > 0;
+            return result < 0;
         }
         #endregion
         #region Filter    

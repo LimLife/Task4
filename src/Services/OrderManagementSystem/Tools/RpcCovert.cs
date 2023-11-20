@@ -1,5 +1,4 @@
-﻿using ItemManagementSystem.Grpc.OrderItemService;
-using OrderManagementSystem.Grpc.ProviderService;
+﻿using OrderManagementSystem.Grpc.ProviderService;
 using OrderManagementSystem.Grpc.OrderService;
 using OrderManagementSystem.Model.Entity;
 using Google.Protobuf.WellKnownTypes;
@@ -34,7 +33,7 @@ namespace OrderManagementSystem.Tools
                 Id = order.Id,
                 Number = order.Number,
                 Date = Timestamp.FromDateTime(order.Date.ToUniversalTime()),
-                Provider = GetProviderReply(order.Provider)
+                Provider  = GetProviderReply(order.Provider)
             };
         }
         public static ListOrderRiply GetOrderReply(List<Order> order)
@@ -96,20 +95,6 @@ namespace OrderManagementSystem.Tools
                 return new Order { Id = delete.Id, };
             }
             return null;
-        }
-
-
-        private const decimal NanoFactor = 1_000_000_000;
-
-        public static decimal GetDecimal(DecimalValue value)
-        {
-            return value.Units + value.Nanos / NanoFactor;
-        }
-        public static DecimalValue GetReplyDecimal(decimal value)
-        {
-            var units = decimal.ToInt64(value);
-            var nanos = decimal.ToInt32((value - units) * NanoFactor);
-            return new DecimalValue() { Nanos = nanos, Units = units };
-        }
+        }     
     }
 }

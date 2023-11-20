@@ -4,13 +4,13 @@ using OrderManagementSystem.Model.DataBase;
 using System.Security.Authentication;
 using OrderManagementSystem.Services;
 using Microsoft.EntityFrameworkCore;
-
+using OrderManagementSystem.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IRepository, Repository>();
 builder.Services.AddDbContext<OrderDB>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("orderConnection")));
-builder.Services.AddGrpc();
+builder.Services.AddGrpc(op => op.Interceptors.Add<CheckDBConnect>());
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {

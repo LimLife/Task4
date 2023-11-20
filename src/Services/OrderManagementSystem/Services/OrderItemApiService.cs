@@ -1,10 +1,9 @@
 ﻿using OrderManagementSystem.Model.Repository.OrderItemRepository;
 using ItemManagementSystem.Grpc.OrderItemService;
 using OrderManagementSystem.Model.Repository;
-using OrderManagementSystem.Tools;
-using Grpc.Core;
-using Google.Protobuf.WellKnownTypes;
 using OrderManagementSystem.Model.Entity;
+using Google.Protobuf.WellKnownTypes;
+using Grpc.Core;
 
 namespace OrderManagementSystem.Services
 {
@@ -22,7 +21,7 @@ namespace OrderManagementSystem.Services
                 Id = item.Id,
                 Name = item.Name,
                 Unit = item.Unit,
-                Quantity = RpcCovert.GetReplyDecimal(item.Quantity),
+                Quantity = item.Quantity,
             });
             reply.Order.AddRange(replyList);
             return reply;
@@ -36,7 +35,7 @@ namespace OrderManagementSystem.Services
                 Id = item.Id,
                 Name = item.Name,
                 Unit = item.Unit,
-                Quantity = RpcCovert.GetReplyDecimal(item.Quantity),
+                Quantity = item.Quantity,
             });
             reply.Order.AddRange(replyList);
             return reply;
@@ -46,11 +45,11 @@ namespace OrderManagementSystem.Services
             var item = await _repositorty.CreateOrderItemAsync(new OrderItem
             {
                 Name = request.Name,
-                Quantity = RpcCovert.GetDecimal(request.Quantity),
+                Quantity = request.Quantity,
                 Unit = request.Unit,
                 OrderId = request.Order
             }) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Elements not found"));
-            return new OrderItemReply { Id = item.Id, Name = item.Name, Quantity = RpcCovert.GetReplyDecimal(item.Quantity), Unit = item.Unit };
+            return new OrderItemReply { Id = item.Id, Name = item.Name, Quantity = item.Quantity, Unit = item.Unit };
         }
         public override async Task<OrderItemReply> UpdateOrderItem(UpdateOrderItemReques request, ServerCallContext context)
         {
@@ -58,11 +57,11 @@ namespace OrderManagementSystem.Services
             {
                 Id = request.Id,
                 Name = request.Name,
-                Quantity = RpcCovert.GetDecimal(request.Quantity),
-                Unit = request.Unit
+                Quantity = request.Quantity,
+                Unit = request.Unit,
             }) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Elements not found"));
 
-            return new OrderItemReply { Id = item.Id, Name = item.Name, Quantity = RpcCovert.GetReplyDecimal(item.Quantity), Unit = item.Unit };
+            return new OrderItemReply { Id = item.Id, Name = item.Name, Quantity = item.Quantity, Unit = item.Unit };
         }
         public override async Task<BoolValue> DeleteOrderItem(DeleteOrderItemReques request, ServerCallContext context)
         {

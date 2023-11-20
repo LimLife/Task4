@@ -9,6 +9,7 @@ namespace CrudClient.Shared.Item
     public partial class ItemEdit : ComponentBase
     {
         [EditorRequired][Parameter] public OrderItem OrderItem { get; set; }
+        [EditorRequired][Parameter] public int OrderId { get; set; }
         [CascadingParameter][Inject] public OrderItemService.OrderItemServiceClient OrderItemService { get; set; }
         [Inject] public OrderService.OrderServiceClient OrderService { get; set; }
         private bool _isCheckName;
@@ -16,7 +17,7 @@ namespace CrudClient.Shared.Item
         {
             try
             {
-                var isContain = await OrderService.IsConstainNumberOrderAsync(new IsConstainStringOrderRequest { IdOrder = OrderItem.Order.Id, Str = OrderItem.Name });
+                var isContain = await OrderService.IsConstainNumberOrderAsync(new IsConstainStringOrderRequest { IdOrder = OrderId, Str = OrderItem.Name });
                 if (isContain.Value == false)
                 {
                     _isCheckName = false;
