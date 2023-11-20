@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CrudClient.Model
 {
@@ -10,8 +9,8 @@ namespace CrudClient.Model
         [StringLength(30, MinimumLength = 2, ErrorMessage = "Длина должна быть от {2} до {1}")]
         public string Name { get; set; }
         [Required (ErrorMessage ="Не может быть пустым")]
-        [Column(TypeName = "decimal(18, 3)")]
-        [RegularExpression("^(0\\.0[1-9][0-9]*|[1-9][0-9]*\\.?[0-9]*)$", ErrorMessage = "Не может быть негативным")]
+ 
+        [RegularExpression(@"^(\d{1,15}(\.\d{1,3})?|0\.\d{1,3})$", ErrorMessage = "Не корректный ввод")]
         public decimal Quantity { get; set; }
         [Required(ErrorMessage = "Не может быть пустым")]
         [StringLength(30, MinimumLength = 2, ErrorMessage = "Длина должна быть от {2} до {1}")]
