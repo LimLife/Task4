@@ -26,6 +26,8 @@ namespace CrudClient.Shared.Item
             try
             {
                 var isContain = await OrderService.IsConstainNumberOrderAsync(new IsConstainStringOrderRequest { IdOrder = OrderId, Str = _orderItem.Name });
+                var s = isContain.Value == true ? 1 : 0;
+                await Console.Out.WriteLineAsync($"{s}");
                 if (isContain.Value == false)
                 {
                     _isCheckName = true;
@@ -35,7 +37,9 @@ namespace CrudClient.Shared.Item
                         Unit = _orderItem.Unit,
                         Quantity = _orderItem.Quantity,
                         Order = OrderId
-                    });                
+                    });
+                    _orderItem = new OrderItem();
+                    StateHasChanged();
                 }
                 else
                     _isCheckName = true;

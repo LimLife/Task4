@@ -1,14 +1,15 @@
-﻿<CascadingValue Value="@OrderItemService">
-    <table class="table mt-4 border-bottom pt-3">
-        <thead>
-            <tr>
-                <th>@nameof(_item.Name)</th>
-                <th>@nameof(_item.Quantity)</th>
-                <th>@nameof(_item.Unit)</th>
-            </tr>
-        </thead>
-        @if (_itemsOrder is not null)
-        {
+﻿@if (_itemsOrder is not null)
+{
+    <CascadingValue Value="@OrderItemService">
+        <table class="table mt-4 border-bottom pt-3">
+            <thead>
+                <tr>
+                    <th>@nameof(_item.Name)</th>
+                    <th>@nameof(_item.Quantity)</th>
+                    <th>@nameof(_item.Unit)</th>
+                </tr>
+            </thead>
+
             <tbody>
                 @foreach (var item in _itemsOrder)
                 {
@@ -38,6 +39,6 @@
                     </tr>
                 }
             </tbody>
-        }
-    </table>
-</CascadingValue>
+        </table>
+    </CascadingValue>
+}
