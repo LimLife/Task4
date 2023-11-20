@@ -16,6 +16,6 @@ namespace CrudClient.Shared
         private void NavigateToOrder(int orderId)
         {
             NavigationManager.NavigateTo($"/order/{orderId}");
-        }
+        }     
     }
 }

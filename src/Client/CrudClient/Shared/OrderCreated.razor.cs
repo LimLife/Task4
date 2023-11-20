@@ -11,8 +11,9 @@ namespace CrudClient.Shared
         [Parameter] public RenderFragment ChildContent { get; set; }
         [CascadingParameter] public List<Provider> Providers { get; set; }
         [Inject] public OrderService.OrderServiceClient OrderService { get; set; }
+        private List<Order> _orders;
         private Order _order;
-
+        private bool _isLoad;
         protected override void OnInitialized()
         {
             _order = new Order()
@@ -23,23 +24,30 @@ namespace CrudClient.Shared
 
         private async Task CreatedOrderHandlerAsync()
         {
-            //Проверить при создании что Что если у Number есть и у него одинаковый профайдер то гг
-            if (_order.Provider.Id != 0)
+            var isConstain = await OrderService.IsConstainProviderOrderAsync(new IsConstainProviderInOrderRequest { Number = _order.Number, ProviderId = _order.Provider.Id });
+            if (isConstain.Value == false)
+            {
                 try
                 {
-                    await OrderService.CreateOrderAsync(new CreateOrderRequest
+                    var order = await OrderService.CreateOrderAsync(new CreateOrderRequest
                     {
                         Number = _order.Number,
                         Date = RpcCovert.GetTimestamp(_order.DateTime),
                         Provider = RpcCovert.GetProviderReply(_order.Provider)
                     });
-                    StateHasChanged();
                     _order = new Order { Provider = Providers.First() };
+                    _orders.Add(RpcCovert.GetOrder(order));
+                    StateHasChanged();
                 }
                 catch (RpcException ex)
                 {
                     await Console.Out.WriteLineAsync(ex.Status.Detail);
                 }
+            }
+        }
+        protected override void OnParametersSet()
+        {
+            _isLoad = _orders is not null;
         }
     }
 }

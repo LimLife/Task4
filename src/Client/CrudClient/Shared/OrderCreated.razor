@@ -1,41 +1,47 @@
-﻿
-<EditForm Model="@_order" OnValidSubmit="@CreatedOrderHandlerAsync">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-    <div class="input-group">
-        <span class="input-group-text">Number:</span>
-        <InputText class="form-control" placeholder="Number" @bind-Value="_order.Number" />
-    </div>
+﻿<div>
+    <EditForm Model="@_order" OnValidSubmit="@CreatedOrderHandlerAsync">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="input-group">
+            <span class="input-group-text">Number:</span>
+            <InputText class="form-control" placeholder="Number" @bind-Value="_order.Number" />
+        </div>
 
-    <div class="md-form row">
-        <div class="col-1 d-flex align-items-center">
-            <label for="starting">Data:</label>
-        </div>
-        <div class="col-11">
-            <InputDate placeholder="Selected starting date" id="startingDate" class="form-control datepicker" @bind-Value="_order.DateTime" />
-        </div>
-    </div>
-    <div class="row">
-        @if (Providers is not null)
-        {
-            <div class="col">
-                <select multiple @bind="_order.Provider.Id">
-                    @foreach (var item in Providers)
-                    {
-                        <option value="@item.Id">@item.Name</option>
-                    }
-                </select>
+        <div class="md-form row">
+            <div class="col-1 d-flex align-items-center">
+                <label for="starting">Data:</label>
             </div>
-        }
-        else
-        {
-            <div>Нету Поставщиков</div>
-        }
-    </div>
-    <div class="row">
-        <div class="col-2">
-            <button type="submit"> Создать Заказ </button>
+            <div class="col-11">
+                <InputDate placeholder="Selected starting date" id="startingDate" class="form-control datepicker" @bind-Value="_order.DateTime" />
+            </div>
         </div>
+        <div class="row">
+            @if (Providers is not null)
+            {
+                <div class="col">
+                    <select multiple @bind="_order.Provider.Id">
+                        @foreach (var item in Providers)
+                        {
+                            <option value="@item.Id">@item.Name</option>
+                        }
+                    </select>
+                </div>
+            }
+            else
+            {
+                <div>Нету Поставщиков</div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-2">
+                <button type="submit"> Создать Заказ </button>
+            </div>
+        </div>
+    </EditForm>
+    <div>
+        @if (_isLoad)
+        {
+            <OrdersTable Orders="@_orders" />
+        }
     </div>
-</EditForm>
-
+</div>

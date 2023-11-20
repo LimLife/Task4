@@ -30,13 +30,13 @@ namespace CrudClient.Shared.Item
                 if (isContain.Value == false)
                 {
                     _isCheckName = true;
-                    await OrderItemService.CreateOrderItemAsync(new CreateOrderItemReques
+                    var order = await OrderItemService.CreateOrderItemAsync(new CreateOrderItemReques
                     {
                         Name = _orderItem.Name,
                         Unit = _orderItem.Unit,
                         Quantity = RpcCovert.GetReplyDecimal(_orderItem.Quantity),
                         Order = OrderId
-                    });
+                    });                
                 }
                 else
                     _isCheckName = true;
