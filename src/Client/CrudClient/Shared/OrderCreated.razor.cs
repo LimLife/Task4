@@ -12,6 +12,7 @@ namespace CrudClient.Shared
         [Inject] public OrderService.OrderServiceClient OrderService { get; set; }
         private List<Order> _orders;
         private Order _order;
+        private bool _isCheckName;
         protected override void OnInitialized()
         {
             _orders = new List<Order>();
@@ -23,10 +24,10 @@ namespace CrudClient.Shared
 
         private async Task CreatedOrderHandlerAsync()
         {
-            var isConstain = await OrderService.IsConstainProviderOrderAsync(new IsConstainProviderInOrderRequest { Number = _order.Number, ProviderId = _order.Provider.Id });
-            if (isConstain.Value == false)
+            try
             {
-                try
+                var isConstain = await OrderService.IsConstainProviderOrderAsync(new IsConstainProviderInOrderRequest { Number = _order.Number, ProviderId = _order.Provider.Id });
+                if (isConstain.Value == false)
                 {
                     var order = await OrderService.CreateOrderAsync(new CreateOrderRequest
                     {
@@ -37,12 +38,15 @@ namespace CrudClient.Shared
                     _order = new Order { Provider = Providers.First() };
                     _orders.Add(RpcCovert.GetOrder(order));
                     StateHasChanged();
+                    _isCheckName = true;
                 }
-                catch (RpcException ex)
-                {
-                    await Console.Out.WriteLineAsync(ex.Status.Detail);
-                }
+                _isCheckName = false;
+            }
+            catch (RpcException ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Status.Detail);
             }
         }
     }
 }
+

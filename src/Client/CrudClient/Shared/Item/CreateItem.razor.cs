@@ -14,7 +14,7 @@ namespace CrudClient.Shared.Item
         [Inject] public OrderItemService.OrderItemServiceClient OrderItemService { get; set; }
         private EditContext _editContext;
         private OrderItem _orderItem { get; set; }
-        private bool _isCheckName = false;
+        private bool _isCheckName;
 
         protected override void OnInitialized()
         {
@@ -26,8 +26,6 @@ namespace CrudClient.Shared.Item
             try
             {
                 var isContain = await OrderService.IsConstainNumberOrderAsync(new IsConstainStringOrderRequest { IdOrder = OrderId, Str = _orderItem.Name });
-                var s = isContain.Value == true ? 1 : 0;
-                await Console.Out.WriteLineAsync($"{s}");
                 if (isContain.Value == false)
                 {
                     _isCheckName = true;
@@ -40,9 +38,9 @@ namespace CrudClient.Shared.Item
                     });
                     _orderItem = new OrderItem();
                     StateHasChanged();
-                }
-                else
                     _isCheckName = true;
+                }
+                _isCheckName = false;
             }
             catch (RpcException ex)
             {

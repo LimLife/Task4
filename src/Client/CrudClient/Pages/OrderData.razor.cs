@@ -44,7 +44,8 @@ namespace CrudClient.Pages
                 {
                     Id = _order.Id,
                     Number = _order.Number,
-                    Date = RpcCovert.GetTimestamp(_order.DateTime)
+                    Date = RpcCovert.GetTimestamp(_order.DateTime),
+                    Provider = RpcCovert.GetProviderReply(_order.Provider)
                 });
             }
             catch (RpcException ex)

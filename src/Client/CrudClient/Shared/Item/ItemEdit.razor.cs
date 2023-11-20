@@ -11,7 +11,7 @@ namespace CrudClient.Shared.Item
         [EditorRequired][Parameter] public OrderItem OrderItem { get; set; }
         [CascadingParameter][Inject] public OrderItemService.OrderItemServiceClient OrderItemService { get; set; }
         [Inject] public OrderService.OrderServiceClient OrderService { get; set; }
-        private bool _isCheckName = false;
+        private bool _isCheckName;
         private async Task ApplayChangesAsync()
         {
             try
@@ -19,7 +19,7 @@ namespace CrudClient.Shared.Item
                 var isContain = await OrderService.IsConstainNumberOrderAsync(new IsConstainStringOrderRequest { IdOrder = OrderItem.Order.Id, Str = OrderItem.Name });
                 if (isContain.Value == false)
                 {
-                    _isCheckName = true;
+                    _isCheckName = false;
                     await OrderItemService.UpdateOrderItemAsync(new UpdateOrderItemReques
                     {
                         Id = OrderItem.Id,
