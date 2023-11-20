@@ -44,6 +44,7 @@ namespace CrudClient.Shared.Item
             catch (RpcException ex)
             {
                 await Console.Out.WriteLineAsync(ex.Status.Detail);
+
             }
         }
     }

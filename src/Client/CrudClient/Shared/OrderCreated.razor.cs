@@ -8,14 +8,13 @@ namespace CrudClient.Shared
 {
     public partial class OrderCreated : ComponentBase
     {
-        [Parameter] public RenderFragment ChildContent { get; set; }
         [CascadingParameter] public List<Provider> Providers { get; set; }
         [Inject] public OrderService.OrderServiceClient OrderService { get; set; }
         private List<Order> _orders;
         private Order _order;
-        private bool _isLoad;
         protected override void OnInitialized()
         {
+            _orders = new List<Order>();
             _order = new Order()
             {
                 Provider = Providers[0] ?? new Provider() { Id = 0, Name = "" }
@@ -44,10 +43,6 @@ namespace CrudClient.Shared
                     await Console.Out.WriteLineAsync(ex.Status.Detail);
                 }
             }
-        }
-        protected override void OnParametersSet()
-        {
-            _isLoad = _orders is not null;
         }
     }
 }

@@ -3,6 +3,7 @@ using CrudClient.Grpc.ProviderService;
 using Google.Protobuf.WellKnownTypes;
 using CrudClient.Grpc.OrderService;
 using CrudClient.Model;
+using System;
 
 namespace CrudClient.Tools
 {
@@ -61,17 +62,5 @@ namespace CrudClient.Tools
             };
         }
        
-        private const decimal NanoFactor = 1_000_000_000;
-
-        public static decimal GetDecimal(DecimalValue value)
-        {
-            return value.Units + value.Nanos / NanoFactor;
-        }
-        public static DecimalValue GetReplyDecimal(decimal value)
-        {
-            var units = decimal.ToInt64(value);
-            var nanos = decimal.ToInt32((value - units) * NanoFactor);
-            return new DecimalValue() { Nanos = nanos, Units = units };
-        }
-    }
+    } 
 }

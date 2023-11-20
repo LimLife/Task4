@@ -1,43 +1,49 @@
 ﻿@page "/order/{orderId:int}"
 <PageTitle>Order</PageTitle>
-<div class="container-fluid">
+<div class="container-xxl pb-5">
     @if (_isLoad)
     {
-        <EditForm Model="@_order" OnInvalidSubmit="@HandleValidSubmitAsync">
-            <DataAnnotationsValidator />
-            <ValidationSummary />
-
-            <p>Текущие данные:</p>
-            <p>Id: @_order.Id</p>
-            <p>Number: @_order.Number</p>
-            <p>DateTime: @_order.DateTime</p>
-            <p>Provider: @_order.Provider.Name</p>
-
-            <p>Введите новые данные:</p>
-
-            <InputText id="number" @bind-Value="_order.Number" />
-            <InputDate id="dateTime" @bind-Value="_order.DateTime" />
-            <InputSelect id="provider" @bind-Value="_order.Provider.Id">
-                @foreach (var provider in _providers)
-                {
-                    <option value="@provider.Id">@provider.Name</option>
-                }
-            </InputSelect>
-            <button type="submit">Сохранить</button>
-            <div id="table-ordersItem">
-            </div>
-        </EditForm>
         <div>
+            <EditForm Model="@_order" OnInvalidSubmit="@HandleValidSubmitAsync">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <p>Текущие данные:</p>
+                <p>Id: @_order.Id</p>
+                <p>Number: @_order.Number</p>
+                <p>DateTime: @_order.DateTime</p>
+                <p>Provider: @_order.Provider.Name</p>
+
+                <p>Введите новые данные:</p>
+
+                <InputText id="number" @bind-Value="_order.Number" />
+                <InputDate id="dateTime" @bind-Value="_order.DateTime" />
+                <InputSelect id="provider" @bind-Value="_order.Provider.Id">
+                    @foreach (var provider in _providers)
+                    {
+                        <option value="@provider.Id">@provider.Name</option>
+                    }
+                </InputSelect>
+                <button type="submit">Сохранить Изменения</button>
+            </EditForm>
+        </div>
+        <div class="pt-3">
             <button @onclick="@DeleteOrdersAsync">Удалить</button>
         </div>
     }
 </div>
-<div id="added-orderitem" class="container-xxl m-1">
+<div id="added-orderitem" class="container-xxl">
     @if (_order is not null)
     {
         <CreateItem OrderId="@OrderId" />
     }
 </div>
-<div id="items">
-    <ItemsTable OrderId="@OrderId" />
+<div id="items" class="container-xxl">
+    <div class="row">
+        <div class="col-5"></div>
+        <div class="col">Заказы</div>
+    </div>
+    <div>
+        <ItemsTable OrderId="@OrderId" />
+    </div>
 </div>

@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using CrudClient.Grpc.OrderService;
 using CrudClient.Model;
-using CrudClient.Tools;
 using Grpc.Core;
 
 namespace CrudClient.Shared.Item
@@ -26,7 +25,7 @@ namespace CrudClient.Shared.Item
                         Id = OrderItem.Id,
                         Name = OrderItem.Name,
                         Unit = OrderItem.Unit,
-                        Quantity = RpcCovert.GetReplyDecimal(OrderItem.Quantity)
+                        Quantity = OrderItem.Quantity
                     });
                 }
                 else
