@@ -25,6 +25,7 @@ namespace CrudClient.Shared.Item
                         Id = item.Id,
                         Name = item.Name,
                         Unit = item.Unit,
+                        Quantity = item.Quantity,
                         Order = new Order { Id = OrderId }
                     }).ToList();
                 };
@@ -40,6 +41,7 @@ namespace CrudClient.Shared.Item
             try
             {
                 await OrderItemService.DeleteOrderItemAsync(new DeleteOrderItemReques() { Id = id });
+                StateHasChanged();
             }
             catch (RpcException ex)
             {
