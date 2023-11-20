@@ -23,6 +23,7 @@ namespace CrudClient.Shared
 
         private async Task CreatedOrderHandlerAsync()
         {
+            //Проверить при создании что Что если у Number есть и у него одинаковый профайдер то гг
             if (_order.Provider.Id != 0)
                 try
                 {

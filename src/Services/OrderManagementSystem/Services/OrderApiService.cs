@@ -14,7 +14,7 @@ namespace OrderManagementSystem.Services
         {
             _repository = repository;
         }
-        public override async Task<BoolValue> IsStringParameterNumber(IsStringParameterRequest request, ServerCallContext context)
+        public override async Task<BoolValue> IsConstainNumberOrder(IsConstainStringOrderRequest request, ServerCallContext context)
         {
             if (request is null || string.IsNullOrEmpty(request.Str))
             {
@@ -23,15 +23,20 @@ namespace OrderManagementSystem.Services
             var result = await _repository.IsContainsNameInOrderAsync(request.IdOrder, request.Str);
             return new BoolValue { Value = result };
         }
+        public override async Task<BoolValue> IsConstainProviderOrder(IsConstainProviderInOrderRequest request, ServerCallContext context)
+        {
+            if (request is null || string.IsNullOrEmpty(request.Number))
+            {
+                _ = new RpcException(new Status(StatusCode.NotFound, $"Order by Id {request.Number}"));
+            }
+            var result = await _repository.IsContainsProviderInOrderAsync(request.ProviderId, request.Number);
+            return new BoolValue { Value = result };
+        }
+
         public override async Task<OrderReply> GetOrder(GetOrderRequest request, ServerCallContext context)
         {
             var item = await _repository.GetOrderByIdAsync(request.Id) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Order with id: {request.Id}"));
             return RpcCovert.GetOrderReply(item);
-        }
-        public override async Task<ListOrderRiply> GetListOrders(Empty request, ServerCallContext context)
-        {
-            var listOrder = await _repository.GetOrdersAsync() ?? throw new RpcException(new Status(StatusCode.NotFound, "Not any order found"));
-            return RpcCovert.GetOrderReply(listOrder);
         }
         public override async Task<OrderReply> CreateOrder(CreateOrderRequest request, ServerCallContext context)
         {

@@ -13,16 +13,20 @@ package order;
 service OrderService{
 	rpc GetOrder(GetOrderRequest)returns(OrderReply);
 	rpc GetListOrders(google.protobuf.Empty)returns(ListOrderRiply);
-	rpc IsStringParameterNumber(IsStringParameterRequest)returns(google.protobuf.BoolValue);
+	rpc IsConstainNumberOrder(IsConstainStringOrderRequest)returns(google.protobuf.BoolValue);
+	rpc IsConstainProviderOrder(IsConstainProviderInOrderRequest)returns(google.protobuf.BoolValue);
 	rpc CreateOrder(CreateOrderRequest)returns(OrderReply);
 	rpc UpdateOrder(UpdateOrderRequest)returns(OrderReply);
 	rpc DeleteOrder(DeleteOrderRequest)returns(google.protobuf.BoolValue);
 }
-
+message IsConstainProviderInOrderRequest{
+	int32 providerId =1;
+	string number =2;
+}
 message GetOrderRequest{
 	int32 id = 1;
 }
-message IsStringParameterRequest{
+message IsConstainStringOrderRequest{
 	int32 idOrder =1;
 	string str = 2;
 }
@@ -51,3 +55,4 @@ message OrderReply{
 message ListOrderRiply{
 	repeated OrderReply orders = 1;
 }
+

@@ -26,7 +26,7 @@ namespace CrudClient.Shared.Item
         {
             try
             {
-                var isContain = await OrderService.IsStringParameterNumberAsync(new IsStringParameterRequest { IdOrder = OrderId, Str = _orderItem.Name });
+                var isContain = await OrderService.IsConstainNumberOrderAsync(new IsConstainStringOrderRequest { IdOrder = OrderId, Str = _orderItem.Name });
                 if (isContain.Value == false)
                 {
                     _isCheckName = true;

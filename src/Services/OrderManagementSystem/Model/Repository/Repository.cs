@@ -19,18 +19,18 @@ namespace OrderManagementSystem.Model.Repository
             .ToListAsync();
         #endregion
         #region Order  
+        public async Task<bool> IsContainsProviderInOrderAsync(int providerId, string numberOrder)
+        {
+            var item = await _context.Orders.AsNoTracking().FirstOrDefaultAsync(order => order.ProviderId == providerId && order.Number == numberOrder);
+            if (item is not null && item.Number == numberOrder) return true;
+            return false;
+        }
         public async Task<Order?> GetOrderByIdAsync(int id) =>
             await _context
             .Orders
             .AsNoTracking()
-            .Include(provider => provider.Provider)
             .FirstOrDefaultAsync(o => o.Id == id);
-        public async Task<List<Order>?> GetOrdersAsync() =>
-            await _context
-            .Orders
-            .AsNoTracking()
-            .Include(provider => provider.Provider)
-            .ToListAsync();
+      
         public async Task<bool> IsContainsNameInOrderAsync(int orderItemId, string nameToItemOrder)
         {
             var item = await _context.Orders.AsNoTracking().FirstOrDefaultAsync(o => o.Id == orderItemId);

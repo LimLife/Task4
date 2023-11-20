@@ -19,7 +19,7 @@
         @if (Providers is not null)
         {
             <div class="col">
-                <select @bind="_order.Provider.Id">
+                <select multiple @bind="_order.Provider.Id">
                     @foreach (var item in Providers)
                     {
                         <option value="@item.Id">@item.Name</option>
