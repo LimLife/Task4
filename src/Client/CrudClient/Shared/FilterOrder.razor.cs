@@ -33,8 +33,8 @@ namespace CrudClient.Shared
                 {
                     Number = _filter.Number,
                     ProviderId = _filter?.Provider?.Id,
-                    End = Timestamp.FromDateTime(_filter.End),
-                    Start = Timestamp.FromDateTime(_filter.Start),
+                    End = _filter.End.ToUniversalTime().ToTimestamp(),
+                    Start = _filter.Start.ToUniversalTime().ToTimestamp(),
                     Name = _filter.Name,
                     Unit = _filter.Unit
                 });

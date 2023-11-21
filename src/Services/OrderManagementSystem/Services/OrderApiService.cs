@@ -2,8 +2,9 @@
 using OrderManagementSystem.Grpc.OrderService;
 using OrderManagementSystem.Model.Repository;
 using OrderManagementSystem.Model.Entity;
-using Google.Protobuf.WellKnownTypes;
+
 using Grpc.Core;
+using Google.Protobuf.WellKnownTypes;
 
 namespace OrderManagementSystem.Services
 {
@@ -22,7 +23,7 @@ namespace OrderManagementSystem.Services
             {
                 Id = item.Id,
                 Number = item.Number,
-                Date = Timestamp.FromDateTime(item.Date),
+                Date = item.Date.ToUniversalTime().ToTimestamp(),
                 Provider = item.Provider
             });
             listReply.Orders.AddRange(reply);
@@ -54,7 +55,8 @@ namespace OrderManagementSystem.Services
             {
                 Id = item.Id,
                 Number = item.Number,
-                Date = Timestamp.FromDateTime(item.Date)
+                Date = item.Date.ToUniversalTime().ToTimestamp(),
+                Provider = item.Provider,
             };
         }
         public override async Task<OrderReply> CreateOrder(CreateOrderRequest request, ServerCallContext context)
@@ -72,7 +74,7 @@ namespace OrderManagementSystem.Services
             {
                 Id = createdItem.Id,
                 Number = createdItem.Number,
-                Date = Timestamp.FromDateTime(createdItem.Date)
+                Date = createdItem.Date.ToUniversalTime().ToTimestamp()
             };
         }
         public override async Task<OrderReply> UpdateOrder(UpdateOrderRequest request, ServerCallContext context)
@@ -90,7 +92,7 @@ namespace OrderManagementSystem.Services
             {
                 Id = update.Id,
                 Number = update.Number,
-                Date = Timestamp.FromDateTime(update.Date)
+                Date = update.Date.ToUniversalTime().ToTimestamp()
             };
         }
         public override async Task<BoolValue> DeleteOrder(DeleteOrderRequest request, ServerCallContext context)

@@ -36,7 +36,7 @@ namespace CrudClient.Shared
                     var order = await OrderService.CreateOrderAsync(new CreateOrderRequest
                     {
                         Number = _order.Number,
-                        Date = Timestamp.FromDateTime(_order.DateTime),
+                        Date = _order.DateTime.ToUniversalTime().ToTimestamp(),
                         Provider = _order.Provider
                     });
                     _order = new Order { Provider = Providers.First() };

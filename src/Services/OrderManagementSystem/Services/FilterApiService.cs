@@ -32,7 +32,8 @@ namespace OrderManagementSystem.Services
             {
                 Id = item.Id,
                 Number = item.Number,
-                Date = Timestamp.FromDateTime(item.Date)
+                Date = item.Date.ToUniversalTime().ToTimestamp(),
+                Provider = item.Provider,
             });
             replyList.Orders.AddRange(toReply);
             return replyList;

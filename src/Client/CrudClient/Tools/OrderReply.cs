@@ -19,7 +19,7 @@ public partial class OrderReply
             Id = orderReply.Id,
             Number = orderReply.Number,
             Provider = orderReply.Provider,
-            Date = orderReply.Date.ToDateTime(),
+            DateTime = orderReply.Date.ToDateTime(),
         };
     }
     public static implicit operator OrderReply(Order reply)
@@ -29,7 +29,7 @@ public partial class OrderReply
             Id = reply.Id,
             Number = reply.Number,
             Provider = reply.Provider,
-            Date = reply.Date
+            DateTime = reply.DateTime
         };
     }
 }
