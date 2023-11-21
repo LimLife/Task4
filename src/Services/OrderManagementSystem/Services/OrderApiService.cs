@@ -1,8 +1,8 @@
 ﻿using OrderManagementSystem.Model.Repository.OrderRepository;
 using OrderManagementSystem.Grpc.OrderService;
 using OrderManagementSystem.Model.Repository;
+using OrderManagementSystem.Model.Entity;
 using Google.Protobuf.WellKnownTypes;
-using OrderManagementSystem.Tools;
 using Grpc.Core;
 
 namespace OrderManagementSystem.Services
@@ -18,7 +18,13 @@ namespace OrderManagementSystem.Services
         {
             var listReply = new ListOrderRiply();
             var items = await _repository.GetOrdersAsync() ?? throw new RpcException(new Status(StatusCode.NotFound, $"Orders not found"));
-            var reply = items.Select(item => RpcCovert.GetOrderReply(item));
+            var reply = items.Select(item => new OrderReply
+            {
+                Id = item.Id,
+                Number = item.Number,
+                Date = Timestamp.FromDateTime(item.Date),
+                Provider = item.Provider
+            });
             listReply.Orders.AddRange(reply);
             return listReply;
         }
@@ -44,22 +50,48 @@ namespace OrderManagementSystem.Services
         public override async Task<OrderReply> GetOrder(GetOrderRequest request, ServerCallContext context)
         {
             var item = await _repository.GetOrderByIdAsync(request.Id) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Order with id: {request.Id}"));
-            return RpcCovert.GetOrderReply(item);
+            return new OrderReply
+            {
+                Id = item.Id,
+                Number = item.Number,
+                Date = Timestamp.FromDateTime(item.Date)
+            };
         }
         public override async Task<OrderReply> CreateOrder(CreateOrderRequest request, ServerCallContext context)
         {
             if (request is null) throw new ArgumentNullException(nameof(request));
 
-            var order = RpcCovert.ConvertRequestToOrder(request);
+            var order = new Order
+            {
+                Number = request.Number,
+                Provider = request.Provider,
+                Date = request.Date.ToDateTime()
+            };
             var createdItem = await _repository.TryCreateOrderAsync(order) ?? throw new RpcException(new Status(StatusCode.Unknown, "Internal exception"));
-            return RpcCovert.GetOrderReply(createdItem);
+            return new OrderReply
+            {
+                Id = createdItem.Id,
+                Number = createdItem.Number,
+                Date = Timestamp.FromDateTime(createdItem.Date)
+            };
         }
         public override async Task<OrderReply> UpdateOrder(UpdateOrderRequest request, ServerCallContext context)
         {
             if (request is null) throw new ArgumentNullException(nameof(request));
-            var order = RpcCovert.ConvertRequestToOrder(request);
+            var order = new Order
+            {
+                Id = request.Id,
+                Number = request.Number,
+                Provider = request.Provider,
+                Date = request.Date.ToDateTime()
+            };
             var update = await _repository.TryUpdateOrderAsync(order) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Element with id: {request.Id}"));
-            return RpcCovert.GetOrderReply(update);
+            return new OrderReply
+            {
+                Id = update.Id,
+                Number = update.Number,
+                Date = Timestamp.FromDateTime(update.Date)
+            };
         }
         public override async Task<BoolValue> DeleteOrder(DeleteOrderRequest request, ServerCallContext context)
         {

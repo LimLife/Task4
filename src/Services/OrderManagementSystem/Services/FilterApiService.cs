@@ -3,7 +3,7 @@ using ItemManagementSystem.Grpc.FilterService;
 using OrderManagementSystem.Grpc.OrderService;
 using OrderManagementSystem.Model.Repository;
 using OrderManagementSystem.Model.EntityDTO;
-using OrderManagementSystem.Tools;
+using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 namespace OrderManagementSystem.Services
@@ -20,13 +20,20 @@ namespace OrderManagementSystem.Services
             {
                 Number = request.Number,
                 ProviderID = request.ProviderId,
-                End = RpcCovert.GetDateTime(request.End),
-                Start = RpcCovert.GetDateTime(request.Start),
+                End = request.End.ToDateTime(),
+                Start = request.Start.ToDateTime(),
                 Name = request.Name,
                 Unit = request.Unit
             });
+            if (items is null) return new ListOrderRiply();
+
             var replyList = new ListOrderRiply();
-            var toReply = items.Select(RpcCovert.GetOrderReply).ToList();
+            var toReply = items.Select(item => new OrderReply
+            {
+                Id = item.Id,
+                Number = item.Number,
+                Date = Timestamp.FromDateTime(item.Date)
+            });
             replyList.Orders.AddRange(toReply);
             return replyList;
         }
