@@ -14,6 +14,14 @@ namespace OrderManagementSystem.Services
         {
             _repository = repository;
         }
+        public override async Task<ListOrderRiply> GetListOrders(Empty request, ServerCallContext context)
+        {
+            var listReply = new ListOrderRiply();
+            var items = await _repository.GetOrdersAsync() ?? throw new RpcException(new Status(StatusCode.NotFound, $"Orders not found"));
+            var reply = items.Select(item => RpcCovert.GetOrderReply(item));
+            listReply.Orders.AddRange(reply);
+            return listReply;
+        }
         public override async Task<BoolValue> IsConstainNumberOrder(IsConstainStringOrderRequest request, ServerCallContext context)
         {
             if (request is null || string.IsNullOrEmpty(request.Str))

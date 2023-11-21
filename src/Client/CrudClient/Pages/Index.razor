@@ -7,7 +7,13 @@
     {
         <CascadingValue Value="@Providers">
             <div id="created" class="container-xxl mt-4">
-                <OrderCreated/>                 
+                <OrderCreated />
+            </div>
+            <div>
+                @if (_orders is not null)
+                {
+                    <OrdersTable Orders="@_orders" />
+                }
             </div>
             <div id="filter" class="container-xxl mt-4">
                 <FilterOrder />

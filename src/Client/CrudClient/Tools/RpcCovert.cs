@@ -1,9 +1,7 @@
-﻿using CrudClient.Grpc.OrderItemService;
-using CrudClient.Grpc.ProviderService;
+﻿using CrudClient.Grpc.ProviderService;
 using Google.Protobuf.WellKnownTypes;
 using CrudClient.Grpc.OrderService;
 using CrudClient.Model;
-using System;
 
 namespace CrudClient.Tools
 {

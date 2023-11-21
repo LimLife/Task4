@@ -18,6 +18,12 @@ namespace OrderManagementSystem.Model.Repository
             .ToListAsync();
         #endregion
         #region Order  
+        public async Task<List<Order>?> GetOrdersAsync() =>
+                await _context
+            .Orders
+            .Include(provider => provider.Provider)
+            .AsNoTracking()
+            .ToListAsync();
         public async Task<bool> IsContainsProviderInOrderAsync(int providerId, string numberOrder)
         {
             var item = await _context
@@ -46,6 +52,9 @@ namespace OrderManagementSystem.Model.Repository
             if (order is null) return null;
             try
             {
+                var newProvider = await _context.Providers.FindAsync(order.Provider.Id);
+                if (newProvider == null) return null;
+                order.Provider = newProvider;
                 await _context.Orders.AddAsync(order);
                 await _context.SaveChangesAsync();
                 return order;
@@ -59,13 +68,29 @@ namespace OrderManagementSystem.Model.Repository
         public async Task<Order?> TryUpdateOrderAsync(Order order)
         {
             if (order is null) return null;
-            var existingOrder = await _context.Orders.FindAsync(order.Id);
-            if (existingOrder is null) return null;
-            existingOrder.ProviderId = order.Provider.Id;
-            existingOrder.Number = order.Number;
-            existingOrder.Date = order.Date;
-            await _context.SaveChangesAsync();
-            return existingOrder;
+            try
+            {
+                var existingOrder = await _context.Orders.FindAsync(order.Id);
+                if (existingOrder is null) return null;
+                var newProvider = await _context.Providers.FindAsync(order.Provider.Id);
+                if (newProvider == null) return null;
+                order.Provider = newProvider;
+                existingOrder.Number = order.Number;
+                existingOrder.Date = order.Date;
+                await _context.SaveChangesAsync();
+
+                existingOrder = await _context
+                    .Orders
+                    .Include(o => o.Provider)
+                    .FirstOrDefaultAsync(o => o.Id == existingOrder.Id);
+                return existingOrder;
+
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                return null;
+            }
         }
         public async Task<bool> TryDeleteOrderAsync(int id)
         {

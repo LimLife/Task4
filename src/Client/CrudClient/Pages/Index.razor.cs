@@ -4,6 +4,7 @@ using Google.Protobuf.WellKnownTypes;
 using CrudClient.Grpc.OrderService;
 using CrudClient.Model;
 using Grpc.Core;
+using CrudClient.Tools;
 
 namespace CrudClient.Pages
 {
@@ -13,15 +14,20 @@ namespace CrudClient.Pages
         [Inject] public OrderService.OrderServiceClient OrderService { get; set; }
         [CascadingParameter] public List<Provider> Providers { get; set; }
 
+        private List<Order> _orders;
 
         private bool _isLoad;
         protected override async Task OnInitializedAsync()
         {
             Providers = new List<Provider>();
+            _orders = new List<Order>();
             try
             {
                 var replyListProvider = await ProviderService.GetListProvidersAsync(new Empty());
                 Providers = replyListProvider.Provider.Select(item => new Provider { Id = item.Id, Name = item.Name }).ToList();
+
+                var replyListOrder = await OrderService.GetListOrdersAsync(new Empty());
+                _orders = replyListOrder.Orders.Select(item => RpcCovert.GetOrder(item)).ToList();
             }
             catch (RpcException ex)
             {

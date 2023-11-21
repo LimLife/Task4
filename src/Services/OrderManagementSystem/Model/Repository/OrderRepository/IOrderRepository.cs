@@ -4,6 +4,7 @@ namespace OrderManagementSystem.Model.Repository.OrderRepository
 {
     public interface IOrderRepository
     {
+        public Task<List<Order>?> GetOrdersAsync();
         public Task<Order?> GetOrderByIdAsync(int id);
         public Task<bool> IsContainsProviderInOrderAsync(int providerId, string nameOrder);
         public Task<bool> IsContainsNameInOrderAsync(int orderItemId, string nameToItemOrder);
