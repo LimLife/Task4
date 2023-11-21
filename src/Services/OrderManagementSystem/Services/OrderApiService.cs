@@ -64,8 +64,6 @@ namespace OrderManagementSystem.Services
         public override async Task<BoolValue> DeleteOrder(DeleteOrderRequest request, ServerCallContext context)
         {
             var result = await _repository.TryDeleteOrderAsync(request.Id);
-            if (!result)
-                throw new RpcException(new Status(StatusCode.NotFound, "Element not Found or any exception"));
             return new BoolValue() { Value = result };
         }
 

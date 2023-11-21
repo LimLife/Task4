@@ -3,19 +3,31 @@
 <PageTitle>Index</PageTitle>
 
 <div class="container-fluid">
-    @if (_isLoad)
+    @if (_isLoad && Providers is not null)
     {
         <CascadingValue Value="@Providers">
             <div id="created" class="container-xxl mt-4">
+                <div class="row">
+                    <div class="col-5"></div>
+                    <div class="col">Созданный Заказ</div>
+                </div>
                 <OrderCreated />
             </div>
             <div class="container-xxl">
+                <div class="row">
+                    <div class="col-5"></div>
+                    <div class="col">Все Заказы</div>
+                </div>
                 @if (_orders is not null)
                 {
                     <OrdersTable Orders="@_orders" />
                 }
             </div>
             <div id="filter" class="container-xxl mt-4">
+                <div class="row">
+                    <div class="col-5"></div>
+                    <div class="col">Отфильтрованные Данные</div>
+                </div>
                 <FilterOrder />
             </div>
         </CascadingValue>

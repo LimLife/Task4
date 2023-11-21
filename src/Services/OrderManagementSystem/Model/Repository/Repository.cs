@@ -96,10 +96,9 @@ namespace OrderManagementSystem.Model.Repository
         {
             try
             {
-                var item = await _context.OrderItems.FindAsync(id);
+                var item = await _context.Orders.FindAsync(id);
                 if (item is null) return false;
-                _context.OrderItems.Remove(item);
-                await _context.SaveChangesAsync();
+                _context.Orders.Remove(item);
                 var result = await _context.SaveChangesAsync();
                 return result > 0;
             }
@@ -167,10 +166,9 @@ namespace OrderManagementSystem.Model.Repository
         {
             try
             {
-                var item = await _context.Orders.FindAsync(id);
+                var item = await _context.OrderItems.FindAsync(id);
                 if (item is null) return false;
-                _context.Orders.Remove(item);
-                await _context.SaveChangesAsync();
+                _context.OrderItems.Remove(item);
                 var result = await _context.SaveChangesAsync();
                 return result > 0;
             }
