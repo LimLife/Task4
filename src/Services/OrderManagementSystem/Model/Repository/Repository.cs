@@ -44,11 +44,17 @@ namespace OrderManagementSystem.Model.Repository
         public async Task<Order?> TryCreateOrderAsync(Order order)
         {
             if (order is null) return null;
-            _context.Entry<Order>(order).State = EntityState.Added;
-            await _context.SaveChangesAsync();
-            var created = await _context.Orders.Include(provider => provider.Provider).FirstOrDefaultAsync(id => id.Id == order.Id);
-            if (created is null) return null;
-            return created;
+            try
+            {
+                await _context.Orders.AddAsync(order);
+                await _context.SaveChangesAsync();
+                return order;
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                return null;
+            }
         }
         public async Task<Order?> TryUpdateOrderAsync(Order order)
         {
@@ -63,11 +69,20 @@ namespace OrderManagementSystem.Model.Repository
         }
         public async Task<bool> TryDeleteOrderAsync(int id)
         {
-            var item = await _context.OrderItems.FindAsync(id);
-            _context.OrderItems.Remove(item);
-            await _context.SaveChangesAsync();
-            var result = await _context.SaveChangesAsync();
-            return result < 0;
+            try
+            {
+                var item = await _context.OrderItems.FindAsync(id);
+                if (item is null) return false;
+                _context.OrderItems.Remove(item);
+                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync();
+                return result > 0;
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                return false;
+            }
         }
         #endregion
         #region OrderItem
@@ -91,33 +106,54 @@ namespace OrderManagementSystem.Model.Repository
         public async Task<OrderItem?> CreateOrderItemAsync(OrderItem item)
         {
             if (item is null) return null;
-            _context.Entry<OrderItem>(item).State = EntityState.Added;
-            await _context.SaveChangesAsync();
-            var createdItem = await _context
-                .OrderItems
-                .AsNoTracking()
-                .FirstOrDefaultAsync(id => id.Id == item.Id);
-            if (createdItem is null) return null;
-            return createdItem;
+            try
+            {
+                await _context.OrderItems.AddAsync(item);
+                await _context.SaveChangesAsync();
+                return item;
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                return null;
+            }
         }
-        public async Task<OrderItem?> UpdateOrderItemAsync(OrderItem item)
+        public async Task<OrderItem?> TryUpdateOrderItemAsync(OrderItem item)
         {
             if (item is null) return null;
-            var existingItem = await _context.OrderItems.FindAsync(item.Id);
-            if (existingItem is null) return null;
-            existingItem.Name = item.Name;
-            existingItem.Quantity = item.Quantity;
-            existingItem.Unit = item.Unit;
-            await _context.SaveChangesAsync();
-            return existingItem;
+            try
+            {
+                var existingItem = await _context.OrderItems.FindAsync(item.Id);
+                if (existingItem is null) return null;
+                existingItem.Name = item.Name;
+                existingItem.Quantity = item.Quantity;
+                existingItem.Unit = item.Unit;
+                await _context.SaveChangesAsync();
+                return existingItem;
+
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                return null;
+            }
         }
-        public async Task<bool> DeleteOrderItemAsync(int id)
+        public async Task<bool> TryDeleteOrderItemAsync(int id)
         {
-            var item = await _context.OrderItems.FindAsync(id);
-            _context.OrderItems.Remove(item);
-            await _context.SaveChangesAsync();
-            var result = await _context.SaveChangesAsync();
-            return result < 0;
+            try
+            {
+                var item = await _context.Orders.FindAsync(id);
+                if (item is null) return false;
+                _context.Orders.Remove(item);
+                await _context.SaveChangesAsync();
+                var result = await _context.SaveChangesAsync();
+                return result > 0;
+            }
+            catch (Exception ex)
+            {
+                await Console.Out.WriteLineAsync(ex.Message);
+                return false;
+            }
         }
         #endregion
         #region Filter    

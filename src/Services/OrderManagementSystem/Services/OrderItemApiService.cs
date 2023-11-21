@@ -53,7 +53,7 @@ namespace OrderManagementSystem.Services
         }
         public override async Task<OrderItemReply> UpdateOrderItem(UpdateOrderItemReques request, ServerCallContext context)
         {
-            var item = await _repositorty.UpdateOrderItemAsync(new OrderItem
+            var item = await _repositorty.TryUpdateOrderItemAsync(new OrderItem
             {
                 Id = request.Id,
                 Name = request.Name,
@@ -65,7 +65,7 @@ namespace OrderManagementSystem.Services
         }
         public override async Task<BoolValue> DeleteOrderItem(DeleteOrderItemReques request, ServerCallContext context)
         {
-            var result = await _repositorty.DeleteOrderItemAsync(request.Id);
+            var result = await _repositorty.TryDeleteOrderItemAsync(request.Id);
             if (!result)
                 throw new RpcException(new Status(StatusCode.NotFound, "Element not Found or any exception"));
             return new BoolValue() { Value = result };
