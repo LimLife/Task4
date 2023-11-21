@@ -183,13 +183,21 @@ namespace OrderManagementSystem.Model.Repository
         public async Task<List<Order>?> GetOrdersByFilterAsync(Filter filter) =>
             await _context
             .Orders.Include(e => e.Provider)
-            .Where(order =>
+             //.Where(order =>
+             //(string.IsNullOrEmpty(filter.Number) || order.Number == filter.Number)
+             //&& order.ProviderId == filter.ProviderID
+             //&& (filter.Start == DateTime.MinValue || order.Date >= filter.Start)
+             //&& (filter.End == DateTime.MinValue || order.Date <= filter.End)
+             //&& (string.IsNullOrEmpty(filter.Name) || order.OrderItems.All(item => item.Name == filter.Name))
+             //&& (string.IsNullOrEmpty(filter.Unit) || order.OrderItems.All(item => item.Unit == filter.Unit)))
+             //.ToListAsync();
+             .Where(order =>
             (string.IsNullOrEmpty(filter.Number) || order.Number == filter.Number)
-            && order.ProviderId == filter.ProviderID
-            && (filter.Start == DateTime.MinValue || order.Date >= filter.Start)
-            && (filter.End == DateTime.MinValue || order.Date <= filter.End)
-            && (string.IsNullOrEmpty(filter.Name) || order.OrderItems.All(item => item.Name == filter.Name))
-            && (string.IsNullOrEmpty(filter.Unit) || order.OrderItems.All(item => item.Unit == filter.Unit)))
+            || order.ProviderId == filter.ProviderID
+            || (filter.Start == DateTime.MinValue || order.Date >= filter.Start)
+            || (filter.End == DateTime.MinValue || order.Date <= filter.End)
+            || (string.IsNullOrEmpty(filter.Name) || order.OrderItems.All(item => item.Name == filter.Name))
+            || (string.IsNullOrEmpty(filter.Unit) || order.OrderItems.All(item => item.Unit == filter.Unit)))
             .ToListAsync();
         #endregion
         public async Task<bool> IsConnectAsync() =>
