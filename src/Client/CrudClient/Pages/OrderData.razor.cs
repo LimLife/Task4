@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Components;
 using Google.Protobuf.WellKnownTypes;
 using CrudClient.Grpc.OrderService;
 using CrudClient.Model;
-using CrudClient.Tools;
 using Grpc.Core;
 
 namespace CrudClient.Pages
@@ -24,10 +23,20 @@ namespace CrudClient.Pages
             try
             {
                 var replyListProvider = await ProviderService.GetListProvidersAsync(new Empty());
-                _providers = replyListProvider.Provider.Select(item => new Provider { Id = item.Id, Name = item.Name }).ToList();
+                _providers = replyListProvider.Provider.Select(item => new Provider
+                {
+                    Id = item.Id,
+                    Name = item.Name
+                }).ToList();
 
                 var replyOrder = await OrderService.GetOrderAsync(new GetOrderRequest() { Id = OrderId });
-                _order = RpcCovert.GetOrder(replyOrder);
+                _order = new Order
+                {
+                    Id = replyOrder.Id,
+                    Number = replyOrder.Number,
+                    Provider = replyOrder.Provider,
+                    DateTime = replyOrder.Date.ToDateTime()
+                };
 
             }
             catch (RpcException ex)
