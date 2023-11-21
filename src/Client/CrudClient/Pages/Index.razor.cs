@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Components;
 using Google.Protobuf.WellKnownTypes;
 using CrudClient.Grpc.OrderService;
 using CrudClient.Model;
-using Grpc.Core;
 using CrudClient.Tools;
+using Grpc.Core;
 
 namespace CrudClient.Pages
 {

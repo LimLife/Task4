@@ -40,7 +40,8 @@ namespace CrudClient.Shared
                     StateHasChanged();
                     _isCheckName = true;
                 }
-                _isCheckName = false;
+                else
+                    _isCheckName = false;
             }
             catch (RpcException ex)
             {
