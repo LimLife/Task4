@@ -67,13 +67,14 @@ namespace OrderManagementSystem.Services
             {
                 Number = request.Number,
                 Provider = request.Provider,
-                Date = request.Date.ToDateTime()
+                Date = request.Date.ToDateTime(),
             };
             var createdItem = await _repository.TryCreateOrderAsync(order) ?? throw new RpcException(new Status(StatusCode.Unknown, "Internal exception"));
             return new OrderReply
             {
                 Id = createdItem.Id,
                 Number = createdItem.Number,
+                Provider = createdItem.Provider,
                 Date = createdItem.Date.ToUniversalTime().ToTimestamp()
             };
         }
