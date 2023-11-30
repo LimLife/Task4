@@ -26,5 +26,7 @@ public partial class ProviderReply
             Name = provider.Name,
         };
     }
+
+   
 }
 

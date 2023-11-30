@@ -10,7 +10,7 @@ namespace OrderManagementSystem.Model.DataBase.FluentApi.Configuration
         {
             builder.ToTable(nameof(OrderItem));
             builder.HasKey(primalKey => primalKey.Id);
-            builder.HasOne(orderId => orderId.Order).WithMany(order => order.OrderItems).OnDelete(DeleteBehavior.Cascade);
+            builder.HasOne(orderId => orderId.Order).WithMany(order => order.OrderItems);
             builder.Property<string>(name => name.Name).HasColumnType("nvarchar(max)");
             builder.Property<decimal>(quantity => quantity.Quantity).HasColumnType("decimal(18,3)");
             builder.Property<string>(unit => unit.Unit).HasColumnType("nvarchar(max)");

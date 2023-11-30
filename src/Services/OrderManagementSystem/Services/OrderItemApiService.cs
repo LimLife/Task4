@@ -14,61 +14,74 @@ namespace OrderManagementSystem.Services
 
         public override async Task<ListOrderItemReply> GetListOrderItemsByOrderId(GetListOrderItemsByOrderIdRequest request, ServerCallContext context)
         {
-            var items = await _repositorty.GetOrdersItemByOrderIdAsync(request.Id) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Element with id: {request.Id}"));
-            var reply = new ListOrderItemReply();
-            var replyList = items.Select(item => new OrderItemReply
+            try
             {
-                Id = item.Id,
-                Name = item.Name,
-                Unit = item.Unit,
-                Quantity = item.Quantity,
-            });
-            reply.Order.AddRange(replyList);
-            return reply;
+                return await _repositorty.GetOrdersItemByOrderIdAsync(request.Id) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Element with id: {request.Id}"));
+            }
+            catch (Exception)
+            {
+                return new ListOrderItemReply();
+            }
         }
         public override async Task<ListOrderItemReply> GetListOrder(Empty request, ServerCallContext context)
         {
-            var items = await _repositorty.GetOrdersItemsAsync() ?? throw new RpcException(new Status(StatusCode.NotFound, $"Elements not found"));
-            var reply = new ListOrderItemReply();
-            var replyList = items.Select(item => new OrderItemReply
+            try
             {
-                Id = item.Id,
-                Name = item.Name,
-                Unit = item.Unit,
-                Quantity = item.Quantity,
-            });
-            reply.Order.AddRange(replyList);
-            return reply;
+                return await _repositorty.GetOrdersItemsAsync() ?? throw new RpcException(new Status(StatusCode.NotFound, $"Elements not found"));
+            }
+            catch (Exception)
+            {
+                return new ListOrderItemReply();
+            }
         }
         public override async Task<OrderItemReply> CreateOrderItem(CreateOrderItemReques request, ServerCallContext context)
         {
-            var item = await _repositorty.CreateOrderItemAsync(new OrderItem
+            try
             {
-                Name = request.Name,
-                Quantity = request.Quantity,
-                Unit = request.Unit,
-                OrderId = request.Order
-            }) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Elements not found"));
-            return new OrderItemReply { Id = item.Id, Name = item.Name, Quantity = item.Quantity, Unit = item.Unit };
+                return await _repositorty.CreateOrderItemAsync(new OrderItem
+                {
+                    Name = request.Name,
+                    Quantity = request.Quantity,
+                    Unit = request.Unit,
+                    OrderId = request.Order
+                }) ?? throw new RpcException(new Status(StatusCode.NotFound, "Can`t create"));
+            }
+            catch (Exception)
+            {
+                return new OrderItemReply();
+            }
         }
         public override async Task<OrderItemReply> UpdateOrderItem(UpdateOrderItemReques request, ServerCallContext context)
         {
-            var item = await _repositorty.TryUpdateOrderItemAsync(new OrderItem
+            try
             {
-                Id = request.Id,
-                Name = request.Name,
-                Quantity = request.Quantity,
-                Unit = request.Unit,
-            }) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Elements not found"));
+                return await _repositorty.TryUpdateOrderItemAsync(new OrderItem
+                {
+                    Id = request.Id,
+                    Name = request.Name,
+                    Quantity = request.Quantity,
+                    Unit = request.Unit,
+                }) ?? throw new RpcException(new Status(StatusCode.NotFound, $"Elements not found"));
+            }
+            catch (Exception)
+            {
+                return new OrderItemReply();
+            }
 
-            return new OrderItemReply { Id = item.Id, Name = item.Name, Quantity = item.Quantity, Unit = item.Unit };
         }
         public override async Task<BoolValue> DeleteOrderItem(DeleteOrderItemReques request, ServerCallContext context)
         {
-            var result = await _repositorty.TryDeleteOrderItemAsync(request.Id);
-            if (!result)
-                throw new RpcException(new Status(StatusCode.NotFound, "Element not Found or any exception"));
-            return new BoolValue() { Value = result };
+            try
+            {
+                var result = await _repositorty.TryDeleteOrderItemAsync(request.Id);
+                if (!result)
+                    throw new RpcException(new Status(StatusCode.NotFound, "Element not Found or any exception"));
+                return new BoolValue() { Value = result };
+            }
+            catch (Exception)
+            {
+                return new BoolValue() { Value = false };
+            }
         }
     }
 }

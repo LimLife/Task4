@@ -13,8 +13,8 @@ package order;
 service OrderService{
 	rpc GetOrder(GetOrderRequest)returns(OrderReply);
 	rpc GetListOrders(google.protobuf.Empty)returns(ListOrderRiply);
-	rpc IsConstainNumberOrder(IsConstainStringOrderRequest)returns(google.protobuf.BoolValue);
-	rpc IsConstainProviderOrder(IsConstainProviderInOrderRequest)returns(google.protobuf.BoolValue);
+	rpc IsContainNumberOrder(IsConstainStringOrderRequest)returns(google.protobuf.BoolValue);
+	rpc IsContainProviderOrder(IsConstainProviderInOrderRequest)returns(google.protobuf.BoolValue);
 	rpc CreateOrder(CreateOrderRequest)returns(OrderReply);
 	rpc UpdateOrder(UpdateOrderRequest)returns(OrderReply);
 	rpc DeleteOrder(DeleteOrderRequest)returns(google.protobuf.BoolValue);

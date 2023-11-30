@@ -3,7 +3,6 @@ using ItemManagementSystem.Grpc.FilterService;
 using OrderManagementSystem.Grpc.OrderService;
 using OrderManagementSystem.Model.Repository;
 using OrderManagementSystem.Model.EntityDTO;
-using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
 namespace OrderManagementSystem.Services
@@ -15,28 +14,23 @@ namespace OrderManagementSystem.Services
 
         public override async Task<ListOrderRiply> GetOrderByFilter(FilterReply request, ServerCallContext context)
         {
-            if (request is null) return new ListOrderRiply();
-            var items = await _repository.GetOrdersByFilterAsync(new Filter
+            try
             {
-                Number = request.Number,
-                ProviderID = request.ProviderId,
-                End = request.End.ToDateTime(),
-                Start = request.Start.ToDateTime(),
-                Name = request.Name,
-                Unit = request.Unit
-            });
-            if (items is null) return new ListOrderRiply();
-
-            var replyList = new ListOrderRiply();
-            var toReply = items.Select(item => new OrderReply
+                if (request is null) return new ListOrderRiply();
+                return await _repository.GetOrdersByFilterAsync(new Filter
+                {
+                    Number = request.Number,
+                    ProviderID = request.ProviderId,
+                    End = request.End.ToDateTime(),
+                    Start = request.Start.ToDateTime(),
+                    Name = request.Name,
+                    Unit = request.Unit
+                }) ?? throw new RpcException(new Status(StatusCode.NotFound, "Nothing found"));
+            }
+            catch (Exception)
             {
-                Id = item.Id,
-                Number = item.Number,
-                Date = item.Date.ToUniversalTime().ToTimestamp(),
-                Provider = item.Provider,
-            });
-            replyList.Orders.AddRange(toReply);
-            return replyList;
+                return new ListOrderRiply();
+            }
         }
     }
 }
